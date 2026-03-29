@@ -35,7 +35,8 @@
             position: fixed;
             border-right: 1px solid var(--glass-border);
             padding: 30px 20px;
-            z-index: 1000;
+            z-index: 2000; /* Ditingkatkan agar di atas overlay */
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .brand-box {
@@ -59,7 +60,7 @@
         }
 
         /* --- MAIN CONTENT --- */
-        main { margin-left: 280px; padding: 40px; width: 100%; }
+        main { margin-left: 280px; padding: 40px; width: 100%; transition: 0.3s; }
         .page { display: none; animation: fadeIn 0.4s ease-out; }
         .page.active { display: block; }
 
@@ -110,11 +111,46 @@
         }
 
         footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--glass-border); text-align: center; color: #475569; font-size: 0.75rem; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        .mobile-header { display: none; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1500; }
+
+        @media (max-width: 992px) {
+            nav { transform: translateX(-100%); }
+            nav.open { transform: translateX(0); box-shadow: 10px 0 50px rgba(0,0,0,0.8); }
+            .overlay.show { display: block; }
+
+            .mobile-header {
+                display: flex; position: fixed; top: 0; left: 0; right: 0; height: 60px;
+                background: rgba(11, 15, 26, 0.95); backdrop-filter: blur(10px); z-index: 1200;
+                padding: 0 20px; align-items: center; border-bottom: 1px solid var(--glass-border);
+            }
+
+            .hamburger {
+                cursor: pointer; background: var(--primary); border: none;
+                width: 38px; height: 38px; border-radius: 10px;
+                display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+            }
+            .hamburger span { width: 20px; height: 2.5px; background: #000; border-radius: 2px; }
+
+            main { margin-left: 0; padding: 100px 20px 40px; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <nav>
+    <div class="mobile-header">
+        <button class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+        <div style="margin-left: 15px; font-weight: 800; font-size: 1.1rem; color: var(--primary);">MECH-HUB</div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <nav id="mainNav">
         <div class="brand-box">
             <h2>MECH-HUB v2.0</h2>
             <p>SMK NEGERI 5 SURAKARTA</p>
@@ -278,14 +314,36 @@
     </main>
 
     <script>
+        // Fungsi khusus untuk buka-tutup menu di HP
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            const overlay = document.getElementById('overlay');
+            nav.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
         function showPage(e, id) {
             if(e) e.preventDefault();
+            
+            // Sembunyikan semua halaman
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Nonaktifkan semua link di nav
             document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            
+            // Tampilkan halaman target
             document.getElementById(id).classList.add('active');
             
+            // Aktifkan link di nav yang diklik
             const targetLink = document.querySelector(`nav ul li a[onclick*="'${id}'"]`);
             if(targetLink) targetLink.classList.add('active');
+            
+            // Tutup menu otomatis jika sedang di mode HP
+            if(window.innerWidth <= 992) {
+                const nav = document.getElementById('mainNav');
+                if(nav.classList.contains('open')) {
+                    toggleMenu();
+                }
+            }
             
             if(id === 'history') renderLogs();
             updateStats();
@@ -310,13 +368,16 @@
         function updateStats() {
             let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
             const count = logs.length;
-            document.getElementById('stats-count').innerText = count;
+            const statsCountEl = document.getElementById('stats-count');
+            if(statsCountEl) statsCountEl.innerText = count;
 
             let rank = "Apprentice";
             if(count > 5) rank = "Junior Mechanic";
             if(count > 10) rank = "Senior Technician";
             if(count > 15) rank = "Master Engineer";
-            document.getElementById('rank-name').innerText = rank;
+            
+            const rankNameEl = document.getElementById('rank-name');
+            if(rankNameEl) rankNameEl.innerText = rank;
         }
 
         function renderLogs() {
@@ -340,6 +401,7 @@
             `).join('');
         }
 
+        // Jalankan update stats saat pertama kali buka
         updateStats();
     </script>
 </body>
