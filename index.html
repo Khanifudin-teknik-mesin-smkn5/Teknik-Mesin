@@ -14,6 +14,7 @@
             --dark-bg: #0b0f1a;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,22 +25,58 @@
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* --- TOGGLE BUTTON (Garis 3) --- */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: var(--primary);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            transition: 0.3s;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #0b0f1a;
+            border-radius: 3px;
+            transition: 0.3s;
         }
 
         /* --- SIDEBAR --- */
         nav {
-            width: 280px;
+            width: var(--sidebar-width);
             background: rgba(11, 15, 26, 0.95);
             backdrop-filter: blur(20px);
             height: 100vh;
             position: fixed;
+            left: 0;
             border-right: 1px solid var(--glass-border);
-            padding: 30px 20px;
+            padding: 80px 20px 30px; /* Padding top ditambah untuk tombol */
             z-index: 1000;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* State saat sidebar disembunyikan */
+        body.sidebar-closed nav { transform: translateX(-100%); }
+        body.sidebar-closed main { margin-left: 0; }
+
         .brand-box {
-            padding: 0 10px 30px;
+            padding: 0 10px 20px;
             border-bottom: 1px solid var(--glass-border);
             margin-bottom: 20px;
         }
@@ -47,27 +84,23 @@
         .brand-box h2 { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; color: var(--primary); }
         .brand-box p { font-size: 0.65rem; color: #64748b; margin-top: 5px; }
 
-        /* --- SEARCH BOX ADDITION --- */
-        .search-container {
+        /* --- FITUR CARI --- */
+        .search-box {
             margin-bottom: 20px;
             padding: 0 5px;
         }
-        .search-input {
+        .search-box input {
             width: 100%;
-            padding: 10px 15px;
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            color: #fff;
+            padding: 12px 15px;
+            border-radius: 12px;
+            color: white;
             font-size: 0.8rem;
-            font-family: inherit;
             outline: none;
             transition: 0.3s;
         }
-        .search-input:focus {
-            border-color: var(--primary);
-            background: rgba(255,255,255,0.05);
-        }
+        .search-box input:focus { border-color: var(--primary); background: rgba(255,255,255,0.05); }
 
         nav ul { list-style: none; }
         nav ul li a {
@@ -81,11 +114,25 @@
         }
 
         /* --- MAIN CONTENT --- */
-        main { margin-left: 280px; padding: 40px; width: 100%; }
+        main { 
+            margin-left: var(--sidebar-width); 
+            padding: 40px; 
+            width: 100%; 
+            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         .page { display: none; animation: fadeIn 0.4s ease-out; }
         .page.active { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 768px) {
+            nav { transform: translateX(-100%); }
+            main { margin-left: 0; padding: 80px 20px 20px; }
+            body.sidebar-open nav { transform: translateX(0); }
+            .stats-grid { grid-template-columns: 1fr; }
+            .menu-toggle { top: 15px; left: 15px; }
+        }
 
         /* --- STATS DASHBOARD --- */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
@@ -136,14 +183,20 @@
 </head>
 <body>
 
-    <nav>
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav id="sidebar">
         <div class="brand-box">
             <h2>MECH-HUB v2.0</h2>
             <p>SMK NEGERI 5 SURAKARTA</p>
         </div>
 
-        <div class="search-container">
-            <input type="text" id="menuSearch" class="search-input" placeholder="Cari menu..." onkeyup="filterMenu()">
+        <div class="search-box">
+            <input type="text" id="menuSearch" placeholder="Cari menu..." onkeyup="searchMenu()">
         </div>
 
         <ul id="menuList">
@@ -202,7 +255,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="bubut" class="page">
             <h1 style="margin-bottom: 30px;">Mesin Bubut (Turning)</h1>
             <div class="grid">
@@ -218,8 +271,20 @@
                 <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logVisit('Rubrik Bubut')">
                     <h3>PENILAIAN PRAKTEK BUBUT</h3><p>Rubrik evaluasi praktik bengkel.</p><span class="badge">RUBRIK</span>
                 </a>
+                <div class="card">
+                    <h3>SOAL ULANGAN MESIN BUBUT</h3>
+                    <span class="badge exam">EXAM MODE</span>
+                    <div class="exam-input-box">
+                        🔗 <a href="#" target="_blank">SOAL BELUM TERSEDIA</a>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div id="frais" class="page"> <h1 style="margin-bottom: 30px;">Mesin Frais</h1> </div>
+        <div id="cnc" class="page"> <h1 style="margin-bottom: 30px;">CNC & Gerinda</h1> </div>
+        <div id="pkk" class="page"> <h1 style="margin-bottom: 30px;">Gambar Teknik & PKK</h1> </div>
+        <div id="katalog" class="page"> <h1 style="margin-bottom: 30px;">Katalog Alat</h1> </div>
 
         <div id="history" class="page">
             <h1>Engine Log (History)</h1>
@@ -233,22 +298,24 @@
     </main>
 
     <script>
-        // NEW: Filter Function for Search Bar
-        function filterMenu() {
-            const input = document.getElementById('menuSearch');
-            const filter = input.value.toLowerCase();
-            const ul = document.getElementById('menuList');
-            const li = ul.getElementsByTagName('li');
-
-            for (let i = 0; i < li.length; i++) {
-                const a = li[i].getElementsByTagName('a')[0];
-                const textValue = a.textContent || a.innerText;
-                if (textValue.toLowerCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
+        // FUNGSI TOGGLE SIDEBAR
+        function toggleSidebar() {
+            if (window.innerWidth > 768) {
+                document.body.classList.toggle('sidebar-closed');
+            } else {
+                document.body.classList.toggle('sidebar-open');
             }
+        }
+
+        // FUNGSI PENCARIAN MENU
+        function searchMenu() {
+            let input = document.getElementById('menuSearch').value.toLowerCase();
+            let items = document.querySelectorAll('#menuList li');
+            
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                item.style.display = text.includes(input) ? "" : "none";
+            });
         }
 
         function showPage(e, id) {
@@ -262,6 +329,11 @@
             
             if(id === 'history') renderLogs();
             updateStats();
+
+            // Tutup sidebar otomatis di mobile setelah pilih menu
+            if (window.innerWidth <= 768) {
+                document.body.classList.remove('sidebar-open');
+            }
         }
 
         function logVisit(name) {
@@ -283,15 +355,13 @@
         function updateStats() {
             let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
             const count = logs.length;
-            const statsElement = document.getElementById('stats-count');
-            if(statsElement) statsElement.innerText = count;
+            document.getElementById('stats-count').innerText = count;
 
             let rank = "Apprentice";
             if(count > 5) rank = "Junior Mechanic";
             if(count > 10) rank = "Senior Technician";
             if(count > 15) rank = "Master Engineer";
-            const rankElement = document.getElementById('rank-name');
-            if(rankElement) rankElement.innerText = rank;
+            document.getElementById('rank-name').innerText = rank;
         }
 
         function renderLogs() {
