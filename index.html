@@ -7,284 +7,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Palette Warna Industrial-Tech Blue */
-            --bg-body: #f0f4f8; /* Abu-abu kebiruan sangat muda */
-            --bg-sidebar: #0a192f; /* Biru Donker Gelap (Navy Deep) */
-            --primary-blue: #1171ef; /* Biru Terang Utama */
-            --accent-blue: #00f2fe; /* Biru Neon untuk aksen */
-            --text-dark: #2d3748; /* Abu-abu gelap untuk teks utama */
-            --text-light: #e0e6ed; /* Abu-abu terang untuk teks sidebar */
+            --bg-body: #f0f4f8;
+            --bg-sidebar: #0a192f;
+            --primary-blue: #1171ef;
+            --accent-blue: #00f2fe;
+            --text-dark: #2d3748;
+            --text-light: #e0e6ed;
             --white: #ffffff;
-            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-body); color: var(--text-dark); display: flex; min-height: 100vh; }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        /* SIDEBAR */
+        nav { width: 300px; background-color: var(--bg-sidebar); height: 100vh; position: fixed; top: 0; left: 0; display: flex; flex-direction: column; z-index: 1000; }
+        .nav-header { padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .nav-header h2 { color: var(--accent-blue); font-size: 1.3rem; }
+        nav ul { list-style: none; padding: 20px 0; flex-grow: 1; overflow-y: auto; }
+        nav ul li a { display: flex; align-items: center; padding: 15px 25px; color: #b0bec5; text-decoration: none; font-size: 0.9rem; transition: var(--transition); border-left: 4px solid transparent; }
+        nav ul li a:hover, nav ul li a.active { background: rgba(17, 113, 239, 0.1); color: var(--white); border-left-color: var(--primary-blue); }
+        .icon { margin-right: 12px; font-size: 1.1rem; }
 
-        /* --- SIDEBAR NAVIGASI --- */
-        nav {
-            width: 300px;
-            background-color: var(--bg-sidebar);
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            border-right: 2px solid rgba(17, 113, 239, 0.2);
-            z-index: 1000;
-        }
+        /* MAIN CONTENT */
+        main { margin-left: 300px; padding: 40px; width: calc(100% - 300px); }
+        .content-page { display: none; animation: fadeIn 0.5s ease; }
+        .content-page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-header {
-            padding: 40px 20px;
-            text-align: center;
-            background: linear-gradient(135deg, var(--bg-sidebar) 0%, #172a45 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+        h1 { font-size: 2rem; color: var(--bg-sidebar); margin-bottom: 30px; position: relative; padding-bottom: 10px; }
+        h1::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 5px; background: var(--primary-blue); border-radius: 3px; }
 
-        .nav-header h2 {
-            color: var(--accent-blue);
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+        .section-title { font-size: 0.85rem; color: var(--primary-blue); text-transform: uppercase; letter-spacing: 1px; margin: 30px 0 15px; font-weight: 700; border-bottom: 1px solid #dee2e6; padding-bottom: 5px; }
+        .materi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+        
+        .materi-item { 
+            background: var(--white); padding: 18px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: var(--transition); border: 1px solid transparent;
         }
+        .materi-item:hover { transform: translateY(-3px); border-color: var(--primary-blue); box-shadow: var(--shadow-card); }
+        .materi-name { font-size: 0.85rem; font-weight: 500; color: var(--text-dark); padding-right: 10px; }
+        .file-badge { font-size: 0.7rem; background: #e2e8f0; padding: 4px 8px; border-radius: 4px; color: #4a5568; font-weight: 700; white-space: nowrap; }
 
-        .nav-header p {
-            color: var(--text-light);
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 20px 0;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        nav ul::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        nav ul::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.1);
-        }
-
-        nav ul li a {
-            display: flex;
-            align-items: center;
-            padding: 18px 30px;
-            color: #b0bec5;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            border-left: 4px solid transparent;
-        }
-
-        nav ul li a span {
-            margin-right: 15px;
-            font-size: 1.2rem;
-        }
-
-        nav ul li a:hover {
-            background-color: rgba(17, 113, 239, 0.1);
-            color: var(--white);
-            padding-left: 35px;
-        }
-
-        nav ul li a.active {
-            background-color: rgba(17, 113, 239, 0.15);
-            color: var(--white);
-            border-left: 4px solid var(--primary-blue);
-            font-weight: 600;
-        }
-
-        /* --- AREA KONTEN UTAMA --- */
-        main {
-            margin-left: 300px;
-            padding: 50px;
-            width: calc(100% - 300px);
-            transition: var(--transition);
-        }
-
-        .content-page {
-            display: none; /* Sembunyikan semua di awal */
-            animation: slideUpIn 0.6s ease;
-        }
-
-        .content-page.active {
-            display: block; /* Tampilkan halaman aktif */
-        }
-
-        @keyframes slideUpIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Styling Header Halaman */
-        h1 {
-            color: var(--bg-sidebar);
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            position: relative;
-        }
-
-        h1::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary-blue), var(--accent-blue));
-            border-radius: 2px;
-        }
-
-        /* --- DASHBOARD UTAMA VISUAL --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .dash-card {
-            background: var(--white);
-            padding: 35px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-card);
-            transition: var(--transition);
-            cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .dash-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(17, 113, 239, 0.15);
-            border-color: rgba(17, 113, 239, 0.2);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dash-card h3 {
-            font-size: 1.25rem;
-            color: var(--bg-sidebar);
-            margin-bottom: 10px;
-        }
-
-        .dash-card p {
-            font-size: 0.9rem;
-            color: #718096;
-            line-height: 1.5;
-        }
-
-        /* --- STYLING LIST MATERI --- */
-        .section-title {
-            font-size: 1rem;
-            color: var(--primary-blue);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 40px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .materi-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 15px;
-        }
-
-        .materi-item {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-            transition: var(--transition);
-            cursor: pointer;
-            border-left: 3px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .materi-item:hover {
-            transform: translateX(5px);
-            background: #fbfdff;
-            border-left-color: var(--primary-blue);
-            box-shadow: var(--shadow-card);
-        }
-
-        .materi-text {
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-        }
-
-        .icon-download {
-            color: var(--primary-blue);
-            opacity: 0.5;
-            font-size: 0.8rem;
-        }
-
-        .materi-item:hover .icon-download {
-            opacity: 1;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid #e2e8f0;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #a0aec0;
-        }
-
-        /* --- MEDIA QUERIES (RESPONSIF) --- */
-        @media (max-width: 992px) {
-            nav { width: 80px; }
-            .nav-header h2, .nav-header p, nav ul li a span:not(.icon) { display: none; }
-            nav ul li a { padding: 20px; justify-content: center; }
-            nav ul li a .icon { margin-right: 0; font-size: 1.4rem; }
-            main { margin-left: 80px; width: calc(100% - 80px); padding: 30px; }
-        }
+        footer { margin-top: 50px; text-align: center; font-size: 0.8rem; color: #a0aec0; border-top: 1px solid #e2e8f0; padding-top: 20px; }
 
         @media (max-width: 768px) {
-            body { flex-direction: column; }
-            nav { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 2px solid var(--primary-blue); }
-            nav ul { display: flex; overflow-x: auto; padding: 10px 0; }
-            nav ul li a { white-space: nowrap; padding: 10px 20px; }
+            nav { width: 100%; height: auto; position: relative; }
+            nav ul { display: flex; overflow-x: auto; }
             main { margin-left: 0; width: 100%; padding: 20px; }
+            .nav-header { padding: 15px; }
         }
     </style>
 </head>
@@ -292,181 +64,157 @@
 
 <nav>
     <div class="nav-header">
-        <h2>T. MESIN</h2>
-        <p>SMK N 5 SURAKARTA</p>
+        <h2>TEKNIK MESIN</h2>
+        <p style="font-size: 0.7rem; color: var(--white); opacity: 0.7;">SMK N 5 SURAKARTA</p>
     </div>
     <ul>
-        <li><a href="#" onclick="openPage(event, 'home')" class="active"><span class="icon">🏠</span> <span>Dashboard</span></a></li>
-        <li><a href="#" onclick="openPage(event, 'dasar-x')"><span class="icon">📐</span> <span>Dasar Teknik X</span></a></li>
-        <li><a href="#" onclick="openPage(event, 'bubut')"><span class="icon">🌀</span> <span>Mesin Bubut</span></a></li>
-        <li><a href="#" onclick="openPage(event, 'frais')"><span class="icon">⚙️</span> <span>Mesin Frais</span></a></li>
-        <li><a href="#" onclick="openPage(event, 'cnc-gerinda')"><span class="icon">💻</span> <span>CNC & Gerinda</span></a></li>
-        <li><a href="#" onclick="openPage(event, 'gambar-pkk')"><span class="icon">✏️</span> <span>Gambar & PKK</span></a></li>
-        <li><a href="#" onclick="openPage(event, 'katalog')"><span class="icon">📂</span> <span>Katalog Alat</span></a></li>
+        <li><a href="#" onclick="showPage(event, 'home')" class="active"><span class="icon">🏠</span> Dashboard</a></li>
+        <li><a href="#" onclick="showPage(event, 'kelas-x')"><span class="icon">📐</span> Dasar Kelas X</a></li>
+        <li><a href="#" onclick="showPage(event, 'bubut')"><span class="icon">🌀</span> Mesin Bubut</a></li>
+        <li><a href="#" onclick="showPage(event, 'frais')"><span class="icon">⚙️</span> Mesin Frais</a></li>
+        <li><a href="#" onclick="showPage(event, 'gambar')"><span class="icon">✏️</span> Gambar Teknik</a></li>
+        <li><a href="#" onclick="showPage(event, 'cnc-gerinda')"><span class="icon">💻</span> CNC & Gerinda</a></li>
+        <li><a href="#" onclick="showPage(event, 'pkk')"><span class="icon">💡</span> PKK (Kreatif)</a></li>
+        <li><a href="#" onclick="showPage(event, 'katalog')"><span class="icon">📂</span> Katalog & Penilaian</a></li>
     </ul>
 </nav>
 
 <main>
     <div id="home" class="content-page active">
-        <h1>Portal Pembelajaran</h1>
-        <p style="color: #718096; margin-bottom: 30px;">Selamat datang di hub materi digital Teknik Mesin SMK N 5 Surakarta. Pilih kategori di bawah ini untuk memulai.</p>
-        
-        <div class="dashboard-grid">
-            <a href="#" class="dash-card" onclick="openPage(event, 'dasar-x')">
-                <div class="card-icon">📐</div>
-                <h3>Dasar Teknik Mesin</h3>
-                <p>Materi kelas X, K3LH, alat ukur jangka sorong & mikrometer.</p>
-            </a>
-            <a href="#" class="dash-card" onclick="openPage(event, 'bubut')">
-                <div class="card-icon">🌀</div>
-                <h3>Pemesinan Bubut</h3>
-                <p>Teori bubut XI, Job Sheet, dan penilaian praktek.</p>
-            </a>
-            <a href="#" class="dash-card" onclick="openPage(event, 'frais')">
-                <div class="card-icon">⚙️</div>
-                <h3>Pemesinan Frais</h3>
-                <p>Materi frais XI/XII, Job Sheet kelas 3, dan evaluasi.</p>
-            </a>
-            <a href="#" class="dash-card" onclick="openPage(event, 'cnc-gerinda')">
-                <div class="card-icon">💻</div>
-                <h3>CNC & Gerinda</h3>
-                <p>Materi CNC 1-2, dan pengoperasian mesin gerinda.</p>
-            </a>
+        <h1>Portal Materi Digital</h1>
+        <p style="color: #718096; margin-bottom: 30px;">Selamat datang. Silakan pilih kategori mata pelajaran untuk mengakses modul, job sheet, dan soal-soal teknik mesin.</p>
+        <div class="materi-item" style="background: var(--primary-blue); color: white; justify-content: center; padding: 40px;">
+            <div style="text-align: center;">
+                <h3>SMK NEGERI 5 SURAKARTA</h3>
+                <p>E-Learning Jurusan Teknik Mesin</p>
+            </div>
         </div>
     </div>
 
-    <div id="dasar-x" class="content-page">
-        <h1>Dasar Teknik Mesin (Kelas X)</h1>
-        
-        <div class="section-title">Fundamental & Keselamatan</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi Bisnis Manufaktur</span> <span class="icon-download">📄 PDF</span></div>
-            <div class="materi-item"><span class="materi-text">Menerapkan Prinsip K3LH</span> <span class="icon-download">📄 PDF</span></div>
-            <div class="materi-item"><span class="materi-text">Menggunakan Perkakas Tangan</span> <span class="icon-download">📄 PDF</span></div>
+    <div id="kelas-x" class="content-page">
+        <h1>Dasar Teknik Mesin Kelas X</h1>
+        <div class="section-title">Materi & Bisnis</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Materi Dasar Kelas X</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">Proses Bisnis Bidang Manufaktur</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">Menerapkan Prinsip2 K3LH</span><span class="file-badge">PDF</span></div>
         </div>
-
-        <div class="section-title">Metrologi (Alat Ukur)</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Menggunakan Alat Ukur</span> <span class="icon-download">📄 PDF</span></div>
-            <div class="materi-item"><span class="materi-text">Penilaian Menggunakan Alat Ukur</span> <span class="icon-download">📝 TEST</span></div>
-            <div class="materi-item"><span class="materi-text">Soal Membaca Jangka Sorong</span> <span class="icon-download">📝 TEST</span></div>
-            <div class="materi-item"><span class="materi-text">Soal Membaca Mikrometer</span> <span class="icon-download">📝 TEST</span></div>
+        <div class="section-title">Alat Ukur & Perkakas</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Menggunakan Alat Ukur</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">Menggunakan Perkakas Tangan</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">Penilaian Mengukur Dengan Alat Ukur</span><span class="file-badge">PDF</span></div>
         </div>
-        
-        <div class="section-title">Evaluasi Akhir</div>
-        <div class="materi-list">
-            <div class="materi-item" style="border-left-color: #f56565;"><span class="materi-text">Soal Ulangan Dasar Teknik Mesin</span> <span class="icon-download">⚠️ UJIAN</span></div>
+        <div class="section-title">Latihan Soal</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Soal Membaca Jangka Sorong Model</span><span class="file-badge">SOAL</span></div>
+            <div class="materi-item"><span class="materi-name">Soal Membaca Mikrometer</span><span class="file-badge">SOAL</span></div>
         </div>
     </div>
 
     <div id="bubut" class="content-page">
-        <h1>Teknik Pemesinan Bubut (XI)</h1>
-        <div class="section-title">Teori Pendukung</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi Mesin Bubut 1</span> <span class="icon-download">📄 PDF</span></div>
-            <div class="materi-item"><span class="materi-text">Materi Mesin Bubut 2</span> <span class="icon-download">📄 PDF</span></div>
+        <h1>Teknik Pemesinan Bubut</h1>
+        <div class="section-title">Modul & Buku Informasi</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Buku Informasi Bekerja Dengan Mesin Bubut</span><span class="file-badge">BUKU</span></div>
+            <div class="materi-item"><span class="materi-name">Buku Informasi Bekerja Dengan Mesin Bubut (1)</span><span class="file-badge">BUKU</span></div>
+            <div class="materi-item"><span class="materi-name">MODULM76A_BARU</span><span class="file-badge">MODUL</span></div>
         </div>
-        <div class="section-title">Praktek & Evaluasi</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Job Sheet Bubut Kelas XI</span> <span class="icon-download">🛠️ JOB</span></div>
-            <div class="materi-item"><span class="materi-text">Lembar Penilaian Praktek Bubut</span> <span class="icon-download">📊 NILAI</span></div>
-            <div class="materi-item"><span class="materi-text">Soal Teknik Pemesinan Bubut</span> <span class="icon-download">📝 TEST</span></div>
-            <div class="materi-item" style="border-left-color: #f56565;"><span class="materi-text">Soal Ulangan Bubut Kelas XI</span> <span class="icon-download">⚠️ UJIAN</span></div>
+        <div class="section-title">Praktek & Soal</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Job Sheet Bubut Kelas XI</span><span class="file-badge">JOB</span></div>
+            <div class="materi-item"><span class="materi-name">Lembar Penilaian Praktik Bubut Kelas XI</span><span class="file-badge">NILAI</span></div>
+            <div class="materi-item"><span class="materi-name">Soal Bekerja Dengan Mesin Bubut</span><span class="file-badge">SOAL</span></div>
         </div>
     </div>
 
     <div id="frais" class="content-page">
         <h1>Teknik Pemesinan Frais</h1>
-        <div class="section-title">Job Sheet & Penilaian</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi Mesin Frais</span> <span class="icon-download">📄 PDF</span></div>
-            <div class="materi-item"><span class="materi-text">Job Sheet Frais Kelas XI</span> <span class="icon-download">🛠️ JOB</span></div>
-            <div class="materi-item"><span class="materi-text">Job Sheet Frais Kelas 3 (XII)</span> <span class="icon-download">🛠️ JOB</span></div>
-            <div class="materi-item"><span class="materi-text">Lembar Penilaian Praktek Frais</span> <span class="icon-download">📊 NILAI</span></div>
+        <div class="section-title">Modul & Pekerjaan</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">3 Buku Kerja Melakukan Pekerjaan Dengan Mesin Frais</span><span class="file-badge">BUKU</span></div>
+            <div class="materi-item"><span class="materi-name">Soal Melakukan Pekerjaan Dengan Mesin Frais</span><span class="file-badge">SOAL</span></div>
         </div>
-        <div class="section-title">Evaluasi</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Soal Teknik Pemesinan Frais</span> <span class="icon-download">📝 TEST</span></div>
-            <div class="materi-item" style="border-left-color: #f56565;"><span class="materi-text">Soal Ulangan Teknik Frais</span> <span class="icon-download">⚠️ UJIAN</span></div>
+        <div class="section-title">Job Sheet & Penilaian</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Job Sheet Frais Kelas 2</span><span class="file-badge">XI</span></div>
+            <div class="materi-item"><span class="materi-name">Job Sheet Frais Kelas 3</span><span class="file-badge">XII</span></div>
+            <div class="materi-item"><span class="materi-name">Lembar Penilaian Praktik Frais Kelas XI</span><span class="file-badge">NILAI</span></div>
+        </div>
+    </div>
+
+    <div id="gambar" class="content-page">
+        <h1>Gambar Teknik Mesin</h1>
+        <div class="section-title">Materi Gambar</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Membaca Gambar Teknik</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">2. Buku Informasi Membaca Gambar Teknik</span><span class="file-badge">BUKU</span></div>
+        </div>
+        <div class="section-title">Menggambar Detail & Bagian</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Menggambar_Bagian_Mesin_SEC</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">Menggambar_Detail_Secara_RI</span><span class="file-badge">PDF</span></div>
+            <div class="materi-item"><span class="materi-name">Menggambar_Detail_Secara_RI (1)</span><span class="file-badge">PDF</span></div>
         </div>
     </div>
 
     <div id="cnc-gerinda" class="content-page">
         <h1>CNC & Mesin Gerinda</h1>
-        <div class="section-title">Computer Numerical Control (CNC)</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi CNC 1</span> <span class="icon-download">💻 CODE</span></div>
-            <div class="materi-item"><span class="materi-text">Materi CNC 2</span> <span class="icon-download">💻 CODE</span></div>
+        <div class="section-title">Pemesinan CNC</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Modul_2_MesinBubut_CNC-verApril2_0</span><span class="file-badge">MODUL</span></div>
+            <div class="materi-item"><span class="materi-name">Dasar+Pemrograman+untuk+Mesin+Bubut+CNC+dengan+GSK+928+TE-rev1</span><span class="file-badge">CODE</span></div>
         </div>
-        <div class="section-title">Pemesinan Gerinda</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi Mesin Gerinda</span> <span class="icon-download">📄 PDF</span></div>
+        <div class="section-title">Mesin Gerinda</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">4-8 modul Mengoperasikan mesin gerinda</span><span class="file-badge">MODUL</span></div>
         </div>
     </div>
 
-    <div id="gambar-pkk" class="content-page">
-        <h1>Gambar Teknik & Produk Kreatif</h1>
-        <div class="section-title">Gambar Teknik Mesin</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi Gambar Teknik 1</span> <span class="icon-download">✏️ DWG</span></div>
-            <div class="materi-item"><span class="materi-text">Materi Gambar Teknik 2</span> <span class="icon-download">✏️ DWG</span></div>
-            <div class="materi-item"><span class="materi-text">Materi Gambar Teknik 3</span> <span class="icon-download">✏️ DWG</span></div>
+    <div id="pkk" class="content-page">
+        <h1>Produk Kreatif & Kewirausahaan</h1>
+        <div class="section-title">Kelas XI</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Modul_PKK_SMK-Kelas-XI</span><span class="file-badge">MODUL</span></div>
+            <div class="materi-item"><span class="materi-name">Projek PKK Kelas XI</span><span class="file-badge">PROJEK</span></div>
         </div>
-        <div class="section-title">Produk Kreatif & Kewirausahaan (PKK)</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Materi PKK Kelas XI</span> <span class="icon-download">💡 IDE</span></div>
-            <div class="materi-item"><span class="materi-text">Materi PKK Kelas XII</span> <span class="icon-download">💡 IDE</span></div>
-            <div class="materi-item"><span class="materi-text">Job Sheet PKK XI & XII</span> <span class="icon-download">🛠️ JOB</span></div>
+        <div class="section-title">Kelas XII</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Modul PKK SMK Kelas XII</span><span class="file-badge">MODUL</span></div>
+            <div class="materi-item"><span class="materi-name">Projek PKK Kelas XII</span><span class="file-badge">PROJEK</span></div>
         </div>
     </div>
 
     <div id="katalog" class="content-page">
-        <h1>Katalog Alat & Rubrik</h1>
-        <div class="section-title">Katalog Referensi</div>
-        <div class="materi-list">
-            <div class="materi-item"><span class="materi-text">Katalog Alat Ukur 1 & 2</span> <span class="icon-download">📖 BUKA</span></div>
-            <div class="materi-item"><span class="materi-text">Katalog Aksesoris Mesin Bubut</span> <span class="icon-download">📖 BUKA</span></div>
-            <div class="materi-item"><span class="materi-text">Katalog Alat Potong</span> <span class="icon-download">📖 BUKA</span></div>
-            <div class="materi-item"><span class="materi-text">Katalog Keselamatan Kerja</span> <span class="icon-download">📖 BUKA</span></div>
+        <h1>Katalog & Penilaian</h1>
+        <div class="section-title">Katalog Alat</div>
+        <div class="materi-grid">
+            <div class="materi-item"><span class="materi-name">Katalog Alat Ukur 1</span><span class="file-badge">KATALOG</span></div>
+            <div class="materi-item"><span class="materi-name">Katalog Alat Ukur 2</span><span class="file-badge">KATALOG</span></div>
+            <div class="materi-item"><span class="materi-name">Katalog Asesories Mesin Bubut</span><span class="file-badge">KATALOG</span></div>
+            <div class="materi-item"><span class="materi-name">Katalog Alat Potong</span><span class="file-badge">KATALOG</span></div>
+            <div class="materi-item"><span class="materi-name">Katalog Keselamatan Kerja</span><span class="file-badge">KATALOG</span></div>
         </div>
-        <div class="section-title">Standar Penilaian</div>
-        <div class="materi-list">
-            <div class="materi-item" style="border-left-color: #38a169; background: #f0fff4;"><span class="materi-text">Rubrik Penilaian Praktek Bengkel Mesin</span> <span class="icon-download" style="color: #38a169;">✅ STANDAR</span></div>
+        <div class="section-title">Rubrik Penilaian</div>
+        <div class="materi-grid">
+            <div class="materi-item" style="border-left-color: #38a169;"><span class="materi-name">Rubrik Penilaian_Praktek Bengkel</span><span class="file-badge" style="background: #c6f6d5; color: #2f855a;">STANDAR</span></div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta | Portal Pembelajaran Digital Modern</p>
+        <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta | Repository Materi Terintegrasi</p>
     </footer>
 </main>
 
 <script>
-    function openPage(event, pageName) {
-        event.preventDefault(); // Mencegah reload halaman saat link diklik
-
-        // 1. Sembunyikan semua halaman konten
-        var pages = document.getElementsByClassName("content-page");
-        for (var i = 0; i < pages.length; i++) {
-            pages[i].classList.remove("active");
-        }
-
-        // 2. Hilangkan class active di semua nav link
-        var navLinks = document.querySelectorAll("nav ul li a");
-        for (var i = 0; i < navLinks.length; i++) {
-            navLinks[i].classList.remove("active");
-        }
-
-        // 3. Tampilkan halaman yang dipilih
-        document.getElementById(pageName).classList.add("active");
+    function showPage(e, id) {
+        e.preventDefault();
+        document.querySelectorAll('.content-page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
         
-        // 4. Set nav link yang sesuai menjadi active (jika diklik dari sidebar)
-        const clickedNavLink = document.querySelector(`nav ul li a[onclick*="'${pageName}'"]`);
-        if (clickedNavLink) {
-            clickedNavLink.classList.add("active");
-        }
-
-        // 5. Scroll otomatis ke atas konten saat halaman berganti
-        window.scrollTo(0, 0);
+        document.getElementById(id).classList.add('active');
+        e.currentTarget.classList.add('active');
+        window.scrollTo(0,0);
     }
 </script>
 
