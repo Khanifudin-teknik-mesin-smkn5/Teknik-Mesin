@@ -4,218 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mechanical Hub | SMK N 5 Surakarta</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d2ff;
             --secondary: #3a7bd5;
-            --accent: #f59e0b;
-            --success: #10b981;
-            --dark-bg: #0b0f1a;
+            --success: #22c55e;
+            --dark-panel: rgba(15, 23, 42, 0.9);
             --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --sidebar-width: 280px;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at 0% 0%, #1e293b 0%, #0b0f1a 100%);
-            color: #f8fafc;
+            background: radial-gradient(circle at top right, #1e293b, #080d17);
+            color: var(--text-main);
             display: flex;
             min-height: 100vh;
-            overflow-x: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- TOGGLE BUTTON (Garis 3) --- */
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1100;
-            background: var(--primary);
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
-            transition: 0.3s;
-        }
-        .menu-toggle span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: #0b0f1a;
-            border-radius: 3px;
-            transition: 0.3s;
-        }
-
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR NAV --- */
         nav {
-            width: var(--sidebar-width);
-            background: rgba(11, 15, 26, 0.95);
-            backdrop-filter: blur(20px);
+            width: 280px;
+            background: var(--dark-panel);
+            backdrop-filter: blur(15px);
             height: 100vh;
             position: fixed;
-            left: 0;
             border-right: 1px solid var(--glass-border);
-            padding: 80px 20px 30px; /* Padding top ditambah untuk tombol */
+            padding: 25px;
             z-index: 1000;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
         }
 
-        /* State saat sidebar disembunyikan */
-        body.sidebar-closed nav { transform: translateX(-100%); }
-        body.sidebar-closed main { margin-left: 0; }
-
-        .brand-box {
-            padding: 0 10px 20px;
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
             border-bottom: 1px solid var(--glass-border);
-            margin-bottom: 20px;
         }
 
-        .brand-box h2 { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; color: var(--primary); }
-        .brand-box p { font-size: 0.65rem; color: #64748b; margin-top: 5px; }
+        .logo-area h2 {
+            font-weight: 800;
+            font-size: 1.2rem;
+            background: linear-gradient(to right, var(--primary), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        /* --- FITUR CARI --- */
+        /* Pencarian Cepat */
         .search-box {
-            margin-bottom: 20px;
-            padding: 0 5px;
-        }
-        .search-box input {
-            width: 100%;
             background: var(--glass);
             border: 1px solid var(--glass-border);
-            padding: 12px 15px;
-            border-radius: 12px;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
             color: white;
             font-size: 0.8rem;
+            width: 100%;
             outline: none;
-            transition: 0.3s;
         }
-        .search-box input:focus { border-color: var(--primary); background: rgba(255,255,255,0.05); }
 
-        nav ul { list-style: none; }
+        nav ul { list-style: none; flex-grow: 1; }
         nav ul li a {
-            display: flex; align-items: center; padding: 12px 15px;
+            display: flex; align-items: center; padding: 14px 18px;
             color: #94a3b8; text-decoration: none; border-radius: 12px;
-            margin-bottom: 6px; transition: 0.3s; font-size: 0.85rem;
+            margin-bottom: 8px; transition: 0.3s; font-size: 0.85rem;
+            font-weight: 500;
         }
         nav ul li a:hover, nav ul li a.active {
-            background: var(--glass); color: #fff; border: 1px solid var(--glass-border);
-            transform: translateX(5px);
+            background: var(--glass);
+            color: var(--primary);
+            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.1);
+            transform: translateX(8px);
         }
 
-        /* --- MAIN CONTENT --- */
-        main { 
-            margin-left: var(--sidebar-width); 
-            padding: 40px; 
-            width: 100%; 
-            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .page { display: none; animation: fadeIn 0.4s ease-out; }
+        /* --- MAIN AREA --- */
+        main { margin-left: 280px; padding: 50px; width: 100%; }
+        .page { display: none; animation: slideUp 0.5s ease; }
         .page.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        /* --- RESPONSIVE MOBILE --- */
-        @media (max-width: 768px) {
-            nav { transform: translateX(-100%); }
-            main { margin-left: 0; padding: 80px 20px 20px; }
-            body.sidebar-open nav { transform: translateX(0); }
-            .stats-grid { grid-template-columns: 1fr; }
-            .menu-toggle { top: 15px; left: 15px; }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* --- STATS DASHBOARD --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
-        .stat-card { 
-            background: var(--glass); border: 1px solid var(--glass-border); padding: 20px; 
-            border-radius: 20px; position: relative;
-        }
-        .stat-card h4 { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-card p { font-size: 1.5rem; font-weight: 800; font-family: 'JetBrains Mono'; color: var(--primary); }
+        header { margin-bottom: 40px; position: relative; }
+        header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; }
+        header p { color: #64748b; margin-top: 10px; }
 
-        /* --- CARDS --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .card {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            padding: 24px; border-radius: 24px; text-decoration: none; color: inherit;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-            display: flex; flex-direction: column;
+        /* --- GRID SYSTEM --- */
+        .section-label { 
+            font-size: 0.75rem; font-weight: 800; color: var(--primary); 
+            text-transform: uppercase; letter-spacing: 2px; margin: 30px 0 15px;
         }
-        .card:hover { 
-            background: rgba(255,255,255,0.06); transform: translateY(-8px); 
-            border-color: var(--primary); box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-        }
-        .card h3 { font-size: 0.95rem; margin-bottom: 8px; color: #fff; }
-        .card p { font-size: 0.75rem; color: #64748b; margin-bottom: 15px; }
         
-        .badge { 
-            font-size: 0.65rem; padding: 5px 12px; border-radius: 8px; font-weight: 700;
-            background: rgba(0, 210, 255, 0.1); color: var(--primary); align-self: flex-start;
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 24px;
+            border-radius: 24px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
-        .badge.exam { background: rgba(245, 158, 11, 0.1); color: var(--accent); }
-
-        /* --- EXAM LINK BOX --- */
-        .exam-input-box {
-            background: rgba(245, 158, 11, 0.05); border: 1px dashed var(--accent);
-            padding: 15px; border-radius: 12px; margin-top: 15px; font-size: 0.8rem;
-        }
-        .exam-input-box a { color: var(--accent); text-decoration: none; font-weight: 700; }
-
-        /* --- HISTORY --- */
-        .history-item {
-            background: var(--glass); border-radius: 15px; padding: 15px 20px;
-            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-            border-left: 4px solid var(--success);
+        
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--glass-border); text-align: center; color: #475569; font-size: 0.75rem; }
+        .card h3 { font-size: 1rem; margin-bottom: 8px; color: #fff; }
+        .card p { font-size: 0.8rem; color: #94a3b8; line-height: 1.5; }
+        .tag {
+            align-self: flex-start; margin-top: 15px; padding: 4px 12px;
+            background: rgba(0, 210, 255, 0.1); color: var(--primary);
+            border-radius: 8px; font-size: 0.65rem; font-weight: 700;
+        }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--primary); color: #080d17;
+            padding: 12px 25px; border-radius: 12px; font-weight: 700;
+            display: none; animation: fadeIn 0.3s; z-index: 2000;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- HISTORY STYLE --- */
+        .history-card {
+            background: var(--glass); padding: 20px; border-radius: 16px;
+            margin-bottom: 12px; display: flex; justify-content: space-between;
+            align-items: center; border-left: 4px solid var(--primary);
+        }
+        .history-info h4 { font-size: 0.9rem; margin-bottom: 4px; }
+        .history-info span { font-size: 0.7rem; color: #64748b; }
+        .badge-done { background: var(--success); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+
+        .btn-clear {
+            padding: 10px 20px; background: transparent; border: 1px solid #ef4444;
+            color: #ef4444; border-radius: 10px; cursor: pointer; margin-bottom: 20px;
+        }
+        .btn-clear:hover { background: #ef4444; color: #fff; }
+
+        footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--glass-border); font-size: 0.8rem; color: #475569; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { width: 100%; height: auto; position: relative; border-right: none; }
+            nav ul { display: flex; overflow-x: auto; padding-bottom: 10px; }
+            main { margin-left: 0; padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
-
-    <nav id="sidebar">
-        <div class="brand-box">
-            <h2>MECH-HUB v2.0</h2>
-            <p>SMK NEGERI 5 SURAKARTA</p>
+    <nav>
+        <div class="logo-area">
+            <h2>SMK N 5 SURAKARTA</h2>
+            <p style="font-size: 0.6rem; color: #64748b;">TEKNIK MESIN HUB</p>
         </div>
 
         <div class="search-box">
-            <input type="text" id="menuSearch" placeholder="Cari menu..." onkeyup="searchMenu()">
+            <input type="text" placeholder="Cari materi..." onkeyup="filterCards(this.value)">
         </div>
 
-        <ul id="menuList">
-            <li><a href="#" class="active" onclick="showPage(event, 'home')">🏠 Dashboard</a></li>
-            <li><a href="#" onclick="showPage(event, 'x')">⚙️ Dasar Teknik X</a></li>
-            <li><a href="#" onclick="showPage(event, 'bubut')">🌀 Mesin Bubut</a></li>
-            <li><a href="#" onclick="showPage(event, 'frais')">⚙️ Mesin Frais</a></li>
-            <li><a href="#" onclick="showPage(event, 'cnc')">💻 CNC & Gerinda</a></li>
-            <li><a href="#" onclick="showPage(event, 'pkk')">💡 PKK & Gambar</a></li>
-            <li><a href="#" onclick="showPage(event, 'katalog')">📂 Katalog Alat</a></li>
-            <li><a href="#" onclick="showPage(event, 'history')">🕒 Log Belajar</a></li>
+        <ul>
+            <li><a href="#" id="nav-home" class="active" onclick="switchPage(event, 'home')">🏠 Dashboard</a></li>
+            <li><a href="#" onclick="switchPage(event, 'dasar')">📐 Dasar Teknik</a></li>
+            <li><a href="#" onclick="switchPage(event, 'bubut')">🌀 Mesin Bubut</a></li>
+            <li><a href="#" onclick="switchPage(event, 'frais')">⚙️ Mesin Frais</a></li>
+            <li><a href="#" onclick="switchPage(event, 'cnc')">💻 CNC & Gerinda</a></li>
+            <li><a href="#" onclick="switchPage(event, 'pkk')">💡 PKK & Gambar</a></li>
+            <li><a href="#" onclick="switchPage(event, 'katalog')">📂 Katalog Alat</a></li>
+            <li><a href="#" onclick="switchPage(event, 'history')">🕒 Riwayat Kamu</a></li>
         </ul>
     </nav>
 
-   <main>
+    <main>
+        <div id="toast">Berhasil dibuka!</div>
+
         <div id="home" class="page active">
             <header>
                 <p style="color:var(--primary); font-weight: 700; letter-spacing: 2px;">SMK BISA, SMK HEBAT</p>
                 <h1>Mechanical Learning Center</h1>
+                <p>Pusat kendali materi teknik mesin terpadu untuk siswa SMK Negeri 5 Surakarta.</p>
             </header>
             <div class="grid">
                 <div class="card" onclick="switchPage(event, 'dasar')">
@@ -227,6 +220,11 @@
                     <h3>Area Bengkel Bubut</h3>
                     <p>Materi Teori & Job Sheet Praktik XI.</p>
                     <span class="tag">GO TO WORKSHOP</span>
+                </div>
+                <div class="card" onclick="switchPage(event, 'cnc')">
+                    <h3>Era Industri 4.0</h3>
+                    <p>Pemrograman CNC Dasar hingga Gerinda Presisi.</p>
+                    <span class="tag">UPGRADE SKILL</span>
                 </div>
             </div>
         </div>
@@ -380,95 +378,84 @@
             <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta | Created with Precision ⚙️</p>
         </footer>
     </main>
+
     <script>
-        // FUNGSI TOGGLE SIDEBAR
-        function toggleSidebar() {
-            if (window.innerWidth > 768) {
-                document.body.classList.toggle('sidebar-closed');
-            } else {
-                document.body.classList.toggle('sidebar-open');
-            }
-        }
-
-        // FUNGSI PENCARIAN MENU
-        function searchMenu() {
-            let input = document.getElementById('menuSearch').value.toLowerCase();
-            let items = document.querySelectorAll('#menuList li');
-            
-            items.forEach(item => {
-                let text = item.textContent.toLowerCase();
-                item.style.display = text.includes(input) ? "" : "none";
-            });
-        }
-
-        function showPage(e, id) {
+        // Navigasi
+        function switchPage(e, id) {
             if(e) e.preventDefault();
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            
             document.getElementById(id).classList.add('active');
-            
-            const targetLink = document.querySelector(`nav ul li a[onclick*="'${id}'"]`);
-            if(targetLink) targetLink.classList.add('active');
-            
-            if(id === 'history') renderLogs();
-            updateStats();
+            const link = document.querySelector(`nav ul li a[onclick*="'${id}'"]`);
+            if(link) link.classList.add('active');
 
-            // Tutup sidebar otomatis di mobile setelah pilih menu
-            if (window.innerWidth <= 768) {
-                document.body.classList.remove('sidebar-open');
-            }
+            if(id === 'history') renderLogs();
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function logVisit(name) {
-            let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
-            const quotes = ["Luar biasa! Lanjutkan belajarmu ⚙️", "Skill teknikmu meningkat! ⚡", "SOP dipatuhi, masa depan cerah 🛠️", "Mantap, target tercapai! 🎯"];
+        // Histori & Motivasi
+        function logAct(name) {
+            showToast(name);
+            let logs = JSON.parse(localStorage.getItem('smk_logs')) || [];
+            const quotes = ["Hebat! Terus asah skillmu 🛠️", "Engineer masa depan! 🚀", "Materi terselesaikan! 🏆", "Mantap, satu langkah lebih maju! ✨"];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             
             logs.unshift({
                 name: name,
-                time: new Date().toLocaleTimeString('id-ID'),
-                date: new Date().toLocaleDateString('id-ID'),
-                msg: quotes[Math.floor(Math.random() * quotes.length)]
+                date: new Date().toLocaleString('id-ID'),
+                quote: randomQuote
             });
             
-            if(logs.length > 20) logs.pop();
-            localStorage.setItem('mech_logs', JSON.stringify(logs));
-            updateStats();
+            if(logs.length > 15) logs.pop();
+            localStorage.setItem('smk_logs', JSON.stringify(logs));
         }
 
-        function updateStats() {
-            let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
-            const count = logs.length;
-            document.getElementById('stats-count').innerText = count;
+        // Notifikasi Toast
+        function showToast(name) {
+            const toast = document.getElementById('toast');
+            toast.innerText = `Membuka: ${name}`;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
 
-            let rank = "Apprentice";
-            if(count > 5) rank = "Junior Mechanic";
-            if(count > 10) rank = "Senior Technician";
-            if(count > 15) rank = "Master Engineer";
-            document.getElementById('rank-name').innerText = rank;
+        // Fitur Pencarian
+        function filterCards(val) {
+            const search = val.toLowerCase();
+            const cards = document.querySelectorAll('.page.active .card');
+            cards.forEach(card => {
+                const title = card.innerText.toLowerCase();
+                card.style.display = title.includes(search) ? 'flex' : 'none';
+            });
         }
 
         function renderLogs() {
-            const list = document.getElementById('log-list');
-            let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
+            const container = document.getElementById('log-container');
+            const logs = JSON.parse(localStorage.getItem('smk_logs')) || [];
             
             if(logs.length === 0) {
-                list.innerHTML = '<p style="color:#64748b">Log mesin kosong. Silakan buka materi.</p>';
+                container.innerHTML = '<p style="color:#64748b">Belum ada aktivitas. Ayo mulai belajar!</p>';
                 return;
             }
 
-            list.innerHTML = logs.map(l => `
-                <div class="history-item">
-                    <div>
-                        <strong style="font-size:0.9rem">${l.name}</strong><br>
-                        <small style="color:#64748b">${l.date} - ${l.time}</small><br>
-                        <span style="color:var(--primary); font-size:0.75rem">"${l.msg}"</span>
+            container.innerHTML = logs.map(l => `
+                <div class="history-card">
+                    <div class="history-info">
+                        <h4>${l.name}</h4>
+                        <span>📅 ${l.date}</span><br>
+                        <small style="color:var(--primary); font-style:italic;">"${l.quote}"</small>
                     </div>
-                    <span style="color:var(--success); font-weight:bold">COMPLETED ✓</span>
+                    <div class="badge-done">LULUS ✓</div>
                 </div>
             `).join('');
         }
 
-        updateStats();
+        function clearLogs() {
+            if(confirm('Hapus riwayat belajar?')) {
+                localStorage.removeItem('smk_logs');
+                renderLogs();
+            }
+        }
     </script>
 </body>
 </html>
