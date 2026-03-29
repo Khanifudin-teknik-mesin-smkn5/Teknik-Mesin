@@ -211,92 +211,175 @@
         </ul>
     </nav>
 
-    <main>
+   <main>
         <div id="home" class="page active">
-            <h1 style="margin-bottom: 20px;">Engineer Dashboard</h1>
-            <div class="stats-grid">
-                <div class="stat-card"><h4>Rank Status</h4><p id="rank-name">Apprentice</p></div>
-                <div class="stat-card"><h4>Materi Dibuka</h4><p id="stats-count">0</p></div>
-                <div class="stat-card"><h4>SOP Status</h4><p style="color:var(--success)">SAFE</p></div>
-            </div>
-            
-            <h2 style="margin-bottom: 20px;">Quick Access</h2>
+            <header>
+                <p style="color:var(--primary); font-weight: 700; letter-spacing: 2px;">SMK BISA, SMK HEBAT</p>
+                <h1>Mechanical Learning Center</h1>
+            </header>
             <div class="grid">
-                <div class="card" onclick="showPage(event, 'x')"><h3>⚙️ Dasar-Dasar Manufaktur</h3><p>Pelajari fondasi teknik mesin tingkat awal.</p></div>
-                <div class="card" onclick="showPage(event, 'bubut')"><h3>🌀 Bengkel Pemesinan</h3><p>Akses Job Sheet dan modul teknik bubut.</p></div>
+                <div class="card" onclick="switchPage(event, 'dasar')">
+                    <h3>Pelajaran Dasar</h3>
+                    <p>K3LH, Alat Ukur, dan Dasar Manufaktur Kelas X.</p>
+                    <span class="tag">START HERE</span>
+                </div>
+                <div class="card" onclick="switchPage(event, 'bubut')">
+                    <h3>Area Bengkel Bubut</h3>
+                    <p>Materi Teori & Job Sheet Praktik XI.</p>
+                    <span class="tag">GO TO WORKSHOP</span>
+                </div>
             </div>
         </div>
 
-        <div id="x" class="page">
-            <h1 style="margin-bottom: 30px;">Dasar Teknik Mesin X</h1>
+        <div id="dasar" class="page">
+            <header><h1>Dasar-Dasar Teknik Mesin</h1></header>
+            <div class="section-label">Materi Utama</div>
             <div class="grid">
-                <a href="MATERI DASAR KELAS X.pdf" target="_blank" class="card" onclick="logVisit('Dasar Kelas X')">
-                    <h3>MATERI DASAR KELAS X</h3><p>Materi inti kompetensi keahlian.</p><span class="badge">E-BOOK</span>
+                <a href="MATERI DASAR KELAS X.pdf" target="_blank" class="card" onclick="logAct('Materi Dasar Kelas X')">
+                    <h3>MATERI DASAR TEKNIK MESIN KELAS X</h3>
+                    <p>Materi komprehensif untuk tingkat awal.</p>
+                    <span class="tag">DOWNLOAD PDF</span>
                 </a>
-                <a href="Proses Bisnis Bidang Manufaktur .pdf" target="_blank" class="card" onclick="logVisit('Bisnis Manufaktur')">
-                    <h3>MATERI BISNIS MANUFAKTUR</h3><p>Alur kerja dunia industri.</p><span class="badge">E-BOOK</span>
+                <a href="Proses Bisnis Bidang Manufaktur.pdf" target="_blank" class="card" onclick="logAct('Bisnis Manufaktur')">
+                    <h3>MATERI BISNIS MANUFAKTUR</h3>
+                    <p>Memahami alur bisnis industri modern.</p>
+                    <span class="tag">READ MORE</span>
                 </a>
-                <a href="Menerapkan Prinsip2 K3LH.pdf" target="_blank" class="card" onclick="logVisit('K3LH')">
-                    <h3>MENERAPKAN PRINSIP K3LH</h3><p>Standar keselamatan kerja bengkel.</p><span class="badge">SAFETY</span>
+                <a href="Menerapkan Prinsip2 K3LH.pdf" target="_blank" class="card" onclick="logAct('Prinsip K3LH')">
+                    <h3>MENERAPKAN PRINSIP K3LH</h3>
+                    <p>Keselamatan adalah prioritas nomor satu.</p>
+                    <span class="tag">SAFETY FIRST</span>
                 </a>
-                <a href="MENGGUNAKAN ALAT UKUR.pdf" target="_blank" class="card" onclick="logVisit('Alat Ukur')">
-                    <h3>MENGGUNAKAN ALAT UKUR</h3><p>Teknik metrologi dasar.</p><span class="badge">METROLOGI</span>
+            </div>
+            <div class="section-label">Metrologi & Evaluasi</div>
+            <div class="grid">
+                <a href="MENGGUNAKAN ALAT UKUR.pdf" target="_blank" class="card" onclick="logAct('Menggunakan Alat Ukur')">
+                    <h3>MENGGUNAKAN ALAT UKUR</h3>
+                    <p>Teknik pengukuran presisi.</p>
+                    <span class="tag">PRACTICE</span>
                 </a>
-                <a href="PENILAIAN MENGUKUR DENGAN MENGGUNAKAN ALAT UKUR.pdf" target="_blank" class="card" onclick="logVisit('Rubrik Ukur')">
-                    <h3>PENILAIAN MENGUKUR</h3><p>Rubrik evaluasi alat ukur.</p><span class="badge">RUBRIK</span>
+                <a href="SOAL MEMBACA jangka sorong Model.pdf" target="_blank" class="card" onclick="logAct('Latihan Jangka Sorong')">
+                    <h3>SOAL JANGKA SORONG</h3>
+                    <p>Uji kemampuan membaca Vernier Caliper.</p>
+                    <span class="tag">EXAM</span>
                 </a>
-                <div class="card">
-                    <h3>SOAL ULANGAN DASAR TEKNIK</h3>
-                    <p>Klik link di bawah untuk menuju lembar ujian online.</p>
-                    <span class="badge exam">EXAM MODE</span>
-                    <div class="exam-input-box">
-                        🔗 <a href="https://forms.gle/ContohLinkSoal" target="_blank">KLIK DISINI UNTUK KERJAKAN SOAL</a>
-                    </div>
-                </div>
+                <a href="SOAL MEMBACA MIKROMETER.pdf" target="_blank" class="card" onclick="logAct('Latihan Mikrometer')">
+                    <h3>SOAL MIKROMETER</h3>
+                    <p>Ketelitian hingga 0.01mm.</p>
+                    <span class="tag">EXAM</span>
+                </a>
             </div>
         </div>
 
         <div id="bubut" class="page">
-            <h1 style="margin-bottom: 30px;">Mesin Bubut (Turning)</h1>
+            <header><h1>Teknik Pemesinan Bubut</h1></header>
+            <div class="section-label">Teori & Modul</div>
             <div class="grid">
-                <a href="02 BUKU INFORMASI BEKERJA DENGAN MESIN BUBUT.pdf" target="_blank" class="card" onclick="logVisit('Materi Bubut 1')">
-                    <h3>MATERI MESIN BUBUT 1</h3><p>Buku informasi pengoperasian.</p><span class="badge">INFO</span>
+                <a href="02 BUKU INFORMASI BEKERJA DENGAN MESIN BUBUT.pdf" target="_blank" class="card" onclick="logAct('Buku Info Bubut 1')">
+                    <h3>MATERI MESIN BUBUT 1</h3>
+                    <p>Dasar pengoperasian mesin bubut.</p>
+                    <span class="tag">MODUL</span>
                 </a>
-                <a href="MODULM76A_BARU.pdf" target="_blank" class="card" onclick="logVisit('Materi Bubut 2')">
-                    <h3>MATERI MESIN BUBUT 2 (M76A)</h3><p>Modul teknis lanjutan.</p><span class="badge">MODUL</span>
+                <a href="MODULM76A_BARU.pdf" target="_blank" class="card" onclick="logAct('Modul M76A')">
+                    <h3>MODUL M76A (BARU)</h3>
+                    <p>Update materi teknik bubut terbaru.</p>
+                    <span class="tag">MODUL</span>
                 </a>
-                <a href="JOB SHEET BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logVisit('Job Sheet Bubut')">
-                    <h3>JOB SHEET BUBUT KELAS XI</h3><p>Instruksi kerja praktikum.</p><span class="badge">JOB SHEET</span>
+            </div>
+            <div class="section-label">Praktik XI</div>
+            <div class="grid">
+                <a href="JOB SHEET BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logAct('Job Sheet Bubut XI')">
+                    <h3>JOB SHEET BUBUT KELAS XI</h3>
+                    <p>Panduan langkah demi langkah praktikum.</p>
+                    <span class="tag">JOB SHEET</span>
                 </a>
-                <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logVisit('Rubrik Bubut')">
-                    <h3>PENILAIAN PRAKTEK BUBUT</h3><p>Rubrik evaluasi praktik bengkel.</p><span class="badge">RUBRIK</span>
+                <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logAct('Rubrik Bubut XI')">
+                    <h3>RUBRIK PENILAIAN BUBUT</h3>
+                    <p>Cek poin penilaian instruktur.</p>
+                    <span class="tag">ASSESSMENT</span>
                 </a>
-                <div class="card">
-                    <h3>SOAL ULANGAN MESIN BUBUT</h3>
-                    <span class="badge exam">EXAM MODE</span>
-                    <div class="exam-input-box">
-                        🔗 <a href="#" target="_blank">SOAL BELUM TERSEDIA</a>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div id="frais" class="page"> <h1 style="margin-bottom: 30px;">Mesin Frais</h1> </div>
-        <div id="cnc" class="page"> <h1 style="margin-bottom: 30px;">CNC & Gerinda</h1> </div>
-        <div id="pkk" class="page"> <h1 style="margin-bottom: 30px;">Gambar Teknik & PKK</h1> </div>
-        <div id="katalog" class="page"> <h1 style="margin-bottom: 30px;">Katalog Alat</h1> </div>
+        <div id="frais" class="page">
+            <header><h1>Teknik Pemesinan Frais</h1></header>
+            <div class="grid">
+                <a href="3 BUKU KERJA MELAKUKAN PEKERJAAN DENGAN MESIN FRAIS.pdf" target="_blank" class="card" onclick="logAct('Buku Kerja Frais')">
+                    <h3>MATERI MESIN FRAIS</h3>
+                    <p>Teknik milling dan pembagian kepala pembagi.</p>
+                    <span class="tag">WORKBOOK</span>
+                </a>
+                <a href="JOOB SHEET FRAIS KELAS 2.pdf" target="_blank" class="card" onclick="logAct('Job Sheet Frais XI')">
+                    <h3>JOB SHEET FRAIS KELAS XI</h3>
+                    <p>Praktik dasar penyayatan frais.</p>
+                    <span class="tag">JOB SHEET</span>
+                </a>
+                <a href="JOB SHEET FRAIS KELAS 3.pdf" target="_blank" class="card" onclick="logAct('Job Sheet Frais XII')">
+                    <h3>JOB SHEET FRAIS KELAS 3</h3>
+                    <p>Projek kompleks tingkat akhir.</p>
+                    <span class="tag">ADVANCED</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="cnc" class="page">
+            <header><h1>Digital Manufacturing (CNC)</h1></header>
+            <div class="grid">
+                <a href="Dasar+Pemrograman+untuk+Mesin+Bubut+CNC+dengan+GSK+928+TE-rev1.pdf" target="_blank" class="card" onclick="logAct('CNC GSK 928')">
+                    <h3>MATERI CNC (GSK 928 TE)</h3>
+                    <p>Dasar kode G dan kode M.</p>
+                    <span class="tag">PROGRAMMING</span>
+                </a>
+                <a href="4-8 modul Mengoperasikan mesin gerinda.pdf" target="_blank" class="card" onclick="logAct('Modul Gerinda')">
+                    <h3>MATERI MESIN GERINDA</h3>
+                    <p>Pengasahan dan perataan permukaan.</p>
+                    <span class="tag">GRINDING</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="pkk" class="page">
+            <header><h1>Produk Kreatif & Gambar</h1></header>
+            <div class="grid">
+                <a href="MODUL_PKK_SMK-KELAS-XI.pdf" target="_blank" class="card" onclick="logAct('PKK Kelas XI')">
+                    <h3>MATERI PKK KELAS XI</h3>
+                    <span class="tag">CREATIVE</span>
+                </a>
+                <a href="MODUL PKK SMK KELAS XII.pdf" target="_blank" class="card" onclick="logAct('PKK Kelas XII')">
+                    <h3>MATERI PKK KELAS XII</h3>
+                    <span class="tag">CREATIVE</span>
+                </a>
+                <a href="Membaca Gambar Teknik.pdf" target="_blank" class="card" onclick="logAct('Membaca Gambar Teknik')">
+                    <h3>MEMBACA GAMBAR TEKNIK</h3>
+                    <p>Interpretasi proyeksi dan toleransi.</p>
+                    <span class="tag">DRAWING</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="katalog" class="page">
+            <header><h1>Katalog Referensi Alat</h1></header>
+            <div class="grid">
+                <a href="KATALOG ALAT UKUR 1.pdf" target="_blank" class="card" onclick="logAct('Katalog Alat Ukur 1')"><h3>KATALOG ALAT UKUR 1</h3><span class="tag">CATALOG</span></a>
+                <a href="KATALOG ASESORIES MESIN BUBUT.pdf" target="_blank" class="card" onclick="logAct('Katalog Aksesoris Bubut')"><h3>KATALOG AKSESORIS BUBUT</h3><span class="tag">CATALOG</span></a>
+                <a href="KATALOG ALAT POTONG.pdf" target="_blank" class="card" onclick="logAct('Katalog Alat Potong')"><h3>KATALOG ALAT POTONG</h3><span class="tag">CATALOG</span></a>
+                <a href="KATALOG KESELAMATAN KERJA.pdf" target="_blank" class="card" onclick="logAct('Katalog K3')"><h3>KATALOG K3</h3><span class="tag">CATALOG</span></a>
+            </div>
+        </div>
 
         <div id="history" class="page">
-            <h1>Engine Log (History)</h1>
-            <p style="margin-bottom: 25px; color: #64748b;">Misi belajar yang telah kamu selesaikan.</p>
-            <div id="log-list"></div>
+            <header>
+                <h1>Progress Belajar Kamu</h1>
+                <p>Materi yang sudah kamu selesaikan akan muncul di sini.</p>
+            </header>
+            <button class="btn-clear" onclick="clearLogs()">Reset Progress</button>
+            <div id="log-container"></div>
         </div>
 
         <footer>
-            <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta</p>
+            <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta | Created with Precision ⚙️</p>
         </footer>
     </main>
-
     <script>
         // FUNGSI TOGGLE SIDEBAR
         function toggleSidebar() {
