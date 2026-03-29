@@ -3,235 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mech-Hub | SMK N 5 Surakarta</title>
+    <title>Mechanical Hub | SMK N 5 Surakarta</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d2ff;
             --secondary: #3a7bd5;
-            --dark: #0f172a;
+            --success: #22c55e;
+            --dark-panel: rgba(15, 23, 42, 0.9);
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
-            --text: #f8fafc;
-            --gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            --text-main: #f8fafc;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #1e293b, #0f172a);
-            color: var(--text);
+            background: radial-gradient(circle at top right, #1e293b, #080d17);
+            color: var(--text-main);
             display: flex;
             min-height: 100vh;
         }
 
-        /* SIDEBAR */
+        /* --- SIDEBAR NAV --- */
         nav {
-            width: 260px;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
+            width: 280px;
+            background: var(--dark-panel);
+            backdrop-filter: blur(15px);
             height: 100vh;
             position: fixed;
             border-right: 1px solid var(--glass-border);
-            padding: 20px;
-            z-index: 100;
+            padding: 25px;
+            z-index: 1000;
         }
 
-        .brand h2 {
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .logo-area {
             text-align: center;
             margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo-area h2 {
+            font-weight: 800;
+            font-size: 1.2rem;
+            background: linear-gradient(to right, var(--primary), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         nav ul { list-style: none; }
         nav ul li a {
-            display: flex; align-items: center; padding: 12px 15px;
+            display: flex; align-items: center; padding: 14px 18px;
             color: #94a3b8; text-decoration: none; border-radius: 12px;
-            margin-bottom: 5px; transition: 0.3s; font-size: 0.9rem;
+            margin-bottom: 8px; transition: 0.3s; font-size: 0.85rem;
+            font-weight: 500;
         }
         nav ul li a:hover, nav ul li a.active {
-            background: var(--glass); color: var(--primary); transform: translateX(5px);
+            background: var(--glass);
+            color: var(--primary);
+            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.1);
+            transform: translateX(8px);
         }
 
-        /* MAIN */
-        main { margin-left: 260px; padding: 50px; width: 100%; }
-        .page { display: none; animation: fadeIn 0.5s ease; }
+        /* --- MAIN AREA --- */
+        main { margin-left: 280px; padding: 50px; width: 100%; }
+        .page { display: none; animation: slideUp 0.5s ease; }
         .page.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-        h1 { font-size: 2.5rem; margin-bottom: 30px; letter-spacing: -1px; }
+        header { margin-bottom: 40px; }
+        header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; }
+        header p { color: #64748b; margin-top: 10px; }
 
-        /* CARDS */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        /* --- GRID SYSTEM --- */
+        .section-label { 
+            font-size: 0.75rem; font-weight: 800; color: var(--primary); 
+            text-transform: uppercase; letter-spacing: 2px; margin: 30px 0 15px;
+        }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
         
         .card {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: 20px; transition: 0.3s;
-            text-decoration: none; color: inherit; display: block;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 24px;
+            border-radius: 24px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover { 
-            transform: translateY(-5px); border-color: var(--primary); 
+        
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
             background: rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
-        .card h3 { color: var(--primary); font-size: 1rem; margin-bottom: 8px; }
-        .card p { font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px; }
-        .badge { font-size: 0.65rem; padding: 4px 10px; background: rgba(0,210,255,0.1); color: var(--primary); border-radius: 10px; font-weight: 700; }
 
-        /* HISTORY SECTION */
-        #history-list { margin-top: 20px; }
-        .history-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px; background: var(--glass); border-radius: 12px;
-            margin-bottom: 10px; font-size: 0.85rem; border-left: 3px solid var(--primary);
+        .card h3 { font-size: 1rem; margin-bottom: 8px; color: #fff; }
+        .card p { font-size: 0.8rem; color: #94a3b8; line-height: 1.5; }
+        .tag {
+            align-self: flex-start; margin-top: 15px; padding: 4px 12px;
+            background: rgba(0, 210, 255, 0.1); color: var(--primary);
+            border-radius: 8px; font-size: 0.65rem; font-weight: 700;
         }
-        .history-time { font-size: 0.7rem; color: #64748b; }
+
+        /* --- HISTORY STYLE --- */
+        .history-card {
+            background: var(--glass); padding: 20px; border-radius: 16px;
+            margin-bottom: 12px; display: flex; justify-content: space-between;
+            align-items: center; border-left: 4px solid var(--primary);
+        }
+        .history-info h4 { font-size: 0.9rem; margin-bottom: 4px; }
+        .history-info span { font-size: 0.7rem; color: #64748b; }
+        .badge-done { background: var(--success); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
 
         .btn-clear {
-            background: transparent; border: 1px solid #ef4444; color: #ef4444;
-            padding: 5px 15px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; margin-bottom: 20px;
+            padding: 10px 20px; background: transparent; border: 1px solid #ef4444;
+            color: #ef4444; border-radius: 10px; cursor: pointer; margin-bottom: 20px;
         }
-        .btn-clear:hover { background: #ef4444; color: white; }
+        .btn-clear:hover { background: #ef4444; color: #fff; }
 
-        footer { margin-top: 50px; text-align: center; color: #475569; font-size: 0.8rem; }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { width: 100%; height: auto; position: relative; border-right: none; }
+            nav ul { display: flex; overflow-x: auto; padding-bottom: 10px; }
+            main { margin-left: 0; padding: 25px; }
+        }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="brand"><h2>MECH-HUB</h2></div>
+        <div class="logo-area">
+            <h2>SMK N 5 SURAKARTA</h2>
+            <p style="font-size: 0.6rem; color: #64748b;">TEKNIK MESIN HUB</p>
+        </div>
         <ul>
-            <li><a href="#" class="active" onclick="show(event, 'home')">🏠 Dashboard</a></li>
-            <li><a href="#" onclick="show(event, 'x')">📐 Dasar Teknik X</a></li>
-            <li><a href="#" onclick="show(event, 'bubut')">🌀 Mesin Bubut</a></li>
-            <li><a href="#" onclick="show(event, 'frais')">⚙️ Mesin Frais</a></li>
-            <li><a href="#" onclick="show(event, 'cnc')">💻 CNC & Gerinda</a></li>
-            <li><a href="#" onclick="show(event, 'history-page')">🕒 Histori Belajar</a></li>
+            <li><a href="#" class="active" onclick="switchPage(event, 'home')">🏠 Dashboard</a></li>
+            <li><a href="#" onclick="switchPage(event, 'dasar')">📐 Dasar Teknik</a></li>
+            <li><a href="#" onclick="switchPage(event, 'bubut')">🌀 Mesin Bubut</a></li>
+            <li><a href="#" onclick="switchPage(event, 'frais')">⚙️ Mesin Frais</a></li>
+            <li><a href="#" onclick="switchPage(event, 'cnc')">💻 CNC & Gerinda</a></li>
+            <li><a href="#" onclick="switchPage(event, 'pkk')">💡 PKK & Gambar</a></li>
+            <li><a href="#" onclick="switchPage(event, 'katalog')">📂 Katalog Alat</a></li>
+            <li><a href="#" onclick="switchPage(event, 'history')">🕒 Riwayat Kamu</a></li>
         </ul>
     </nav>
 
     <main>
         <div id="home" class="page active">
-            <h1>Selamat Datang, Calon Insinyur!</h1>
-            <p style="margin-bottom: 30px; color: #94a3b8;">Klik pada kartu materi untuk membuka file PDF. Riwayat belajarmu akan tersimpan otomatis.</p>
+            <header>
+                <p style="color:var(--primary); font-weight: 700; letter-spacing: 2px;">SMK BISA, SMK HEBAT</p>
+                <h1>Mechanical Learning Center</h1>
+            </header>
             <div class="grid">
-                <div class="card" onclick="show(event, 'x')"><h3>📐 Dasar Teknik X</h3><p>K3LH, Alat Ukur, dan Bisnis Manufaktur.</p></div>
-                <div class="card" onclick="show(event, 'bubut')"><h3>🌀 Pemesinan Bubut</h3><p>Modul, Job Sheet, dan Penilaian Bubut.</p></div>
+                <div class="card" onclick="switchPage(event, 'dasar')">
+                    <h3>Pelajaran Dasar</h3>
+                    <p>K3LH, Alat Ukur, dan Dasar Manufaktur Kelas X.</p>
+                    <span class="tag">START HERE</span>
+                </div>
+                <div class="card" onclick="switchPage(event, 'bubut')">
+                    <h3>Area Bengkel Bubut</h3>
+                    <p>Materi Teori & Job Sheet Praktik XI.</p>
+                    <span class="tag">GO TO WORKSHOP</span>
+                </div>
             </div>
         </div>
 
-        <div id="x" class="page">
-            <h1>Dasar Teknik X</h1>
+        <div id="dasar" class="page">
+            <header><h1>Dasar-Dasar Teknik Mesin</h1></header>
+            <div class="section-label">Materi Utama</div>
             <div class="grid">
-                <a href="Menerapkan Prinsip2 K3LH.pdf" target="_blank" class="card" onclick="saveHistory('Menerapkan Prinsip2 K3LH')">
-                    <h3>Prinsip K3LH</h3>
-                    <p>Klik untuk membuka file PDF</p>
-                    <span class="badge">OPEN PDF</span>
+                <a href="MATERI DASAR KELAS X.pdf" target="_blank" class="card" onclick="logAct('Materi Dasar Kelas X')">
+                    <h3>MATERI DASAR TEKNIK MESIN KELAS X</h3>
+                    <p>Materi komprehensif untuk tingkat awal.</p>
+                    <span class="tag">DOWNLOAD PDF</span>
                 </a>
-                <a href="Proses Bisnis Bidang Manufaktur.pdf" target="_blank" class="card" onclick="saveHistory('Bisnis Manufaktur')">
-                    <h3>Bisnis Manufaktur</h3>
-                    <p>Memahami alur kerja industri.</p>
-                    <span class="badge">OPEN PDF</span>
+                <a href="Proses Bisnis Bidang Manufaktur.pdf" target="_blank" class="card" onclick="logAct('Bisnis Manufaktur')">
+                    <h3>MATERI BISNIS MANUFAKTUR</h3>
+                    <p>Memahami alur bisnis industri modern.</p>
+                    <span class="tag">READ MORE</span>
                 </a>
-                <a href="MATERI DASAR KELAS X.pdf" target="_blank" class="card" onclick="saveHistory('Materi Dasar X')">
-                    <h3>Materi Dasar X</h3>
-                    <p>Kumpulan materi dasar teknik mesin.</p>
-                    <span class="badge">OPEN PDF</span>
+                <a href="Menerapkan Prinsip2 K3LH.pdf" target="_blank" class="card" onclick="logAct('Prinsip K3LH')">
+                    <h3>MENERAPKAN PRINSIP K3LH</h3>
+                    <p>Keselamatan adalah prioritas nomor satu.</p>
+                    <span class="tag">SAFETY FIRST</span>
+                </a>
+            </div>
+            <div class="section-label">Metrologi & Evaluasi</div>
+            <div class="grid">
+                <a href="MENGGUNAKAN ALAT UKUR.pdf" target="_blank" class="card" onclick="logAct('Menggunakan Alat Ukur')">
+                    <h3>MENGGUNAKAN ALAT UKUR</h3>
+                    <p>Teknik pengukuran presisi.</p>
+                    <span class="tag">PRACTICE</span>
+                </a>
+                <a href="SOAL MEMBACA jangka sorong Model.pdf" target="_blank" class="card" onclick="logAct('Latihan Jangka Sorong')">
+                    <h3>SOAL JANGKA SORONG</h3>
+                    <p>Uji kemampuan membaca Vernier Caliper.</p>
+                    <span class="tag">EXAM</span>
+                </a>
+                <a href="SOAL MEMBACA MIKROMETER.pdf" target="_blank" class="card" onclick="logAct('Latihan Mikrometer')">
+                    <h3>SOAL MIKROMETER</h3>
+                    <p>Ketelitian hingga 0.01mm.</p>
+                    <span class="tag">EXAM</span>
                 </a>
             </div>
         </div>
 
         <div id="bubut" class="page">
-            <h1>Mesin Bubut</h1>
+            <header><h1>Teknik Pemesinan Bubut</h1></header>
+            <div class="section-label">Teori & Modul</div>
             <div class="grid">
-                <a href="JOB SHEET BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="saveHistory('Job Sheet Bubut XI')">
-                    <h3>Job Sheet Bubut XI</h3>
-                    <p>Panduan praktikum mesin bubut.</p>
-                    <span class="badge">OPEN JOB SHEET</span>
+                <a href="02 BUKU INFORMASI BEKERJA DENGAN MESIN BUBUT.pdf" target="_blank" class="card" onclick="logAct('Buku Info Bubut 1')">
+                    <h3>MATERI MESIN BUBUT 1</h3>
+                    <p>Dasar pengoperasian mesin bubut.</p>
+                    <span class="tag">MODUL</span>
                 </a>
-                <a href="MODULM76A_BARU.pdf" target="_blank" class="card" onclick="saveHistory('Modul Bubut M76A')">
-                    <h3>Modul M76A Baru</h3>
-                    <p>Modul pembelajaran teknis terbaru.</p>
-                    <span class="badge">OPEN MODUL</span>
+                <a href="MODULM76A_BARU.pdf" target="_blank" class="card" onclick="logAct('Modul M76A')">
+                    <h3>MODUL M76A (BARU)</h3>
+                    <p>Update materi teknik bubut terbaru.</p>
+                    <span class="tag">MODUL</span>
                 </a>
-                <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="saveHistory('Penilaian Bubut XI')">
-                    <h3>Rubrik Penilaian Bubut</h3>
-                    <p>Standar nilai praktek bengkel.</p>
-                    <span class="badge">OPEN PDF</span>
+            </div>
+            <div class="section-label">Praktik XI</div>
+            <div class="grid">
+                <a href="JOB SHEET BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logAct('Job Sheet Bubut XI')">
+                    <h3>JOB SHEET BUBUT KELAS XI</h3>
+                    <p>Panduan langkah demi langkah praktikum.</p>
+                    <span class="tag">JOB SHEET</span>
+                </a>
+                <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logAct('Rubrik Bubut XI')">
+                    <h3>RUBRIK PENILAIAN BUBUT</h3>
+                    <p>Cek poin penilaian instruktur.</p>
+                    <span class="tag">ASSESSMENT</span>
                 </a>
             </div>
         </div>
 
-        <div id="history-page" class="page">
-            <h1>Histori Belajar</h1>
-            <button class="btn-clear" onclick="clearHistory()">Hapus Semua Riwayat</button>
-            <div id="history-list">
-                </div>
+        <div id="frais" class="page">
+            <header><h1>Teknik Pemesinan Frais</h1></header>
+            <div class="grid">
+                <a href="3 BUKU KERJA MELAKUKAN PEKERJAAN DENGAN MESIN FRAIS.pdf" target="_blank" class="card" onclick="logAct('Buku Kerja Frais')">
+                    <h3>MATERI MESIN FRAIS</h3>
+                    <p>Teknik milling dan pembagian kepala pembagi.</p>
+                    <span class="tag">WORKBOOK</span>
+                </a>
+                <a href="JOOB SHEET FRAIS KELAS 2.pdf" target="_blank" class="card" onclick="logAct('Job Sheet Frais XI')">
+                    <h3>JOB SHEET FRAIS KELAS XI</h3>
+                    <p>Praktik dasar penyayatan frais.</p>
+                    <span class="tag">JOB SHEET</span>
+                </a>
+                <a href="JOB SHEET FRAIS KELAS 3.pdf" target="_blank" class="card" onclick="logAct('Job Sheet Frais XII')">
+                    <h3>JOB SHEET FRAIS KELAS 3</h3>
+                    <p>Projek kompleks tingkat akhir.</p>
+                    <span class="tag">ADVANCED</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="cnc" class="page">
+            <header><h1>Digital Manufacturing (CNC)</h1></header>
+            <div class="grid">
+                <a href="Dasar+Pemrograman+untuk+Mesin+Bubut+CNC+dengan+GSK+928+TE-rev1.pdf" target="_blank" class="card" onclick="logAct('CNC GSK 928')">
+                    <h3>MATERI CNC (GSK 928 TE)</h3>
+                    <p>Dasar kode G dan kode M.</p>
+                    <span class="tag">PROGRAMMING</span>
+                </a>
+                <a href="4-8 modul Mengoperasikan mesin gerinda.pdf" target="_blank" class="card" onclick="logAct('Modul Gerinda')">
+                    <h3>MATERI MESIN GERINDA</h3>
+                    <p>Pengasahan dan perataan permukaan.</p>
+                    <span class="tag">GRINDING</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="pkk" class="page">
+            <header><h1>Produk Kreatif & Gambar</h1></header>
+            <div class="grid">
+                <a href="MODUL_PKK_SMK-KELAS-XI.pdf" target="_blank" class="card" onclick="logAct('PKK Kelas XI')">
+                    <h3>MATERI PKK KELAS XI</h3>
+                    <span class="tag">CREATIVE</span>
+                </a>
+                <a href="MODUL PKK SMK KELAS XII.pdf" target="_blank" class="card" onclick="logAct('PKK Kelas XII')">
+                    <h3>MATERI PKK KELAS XII</h3>
+                    <span class="tag">CREATIVE</span>
+                </a>
+                <a href="Membaca Gambar Teknik.pdf" target="_blank" class="card" onclick="logAct('Membaca Gambar Teknik')">
+                    <h3>MEMBACA GAMBAR TEKNIK</h3>
+                    <p>Interpretasi proyeksi dan toleransi.</p>
+                    <span class="tag">DRAWING</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="katalog" class="page">
+            <header><h1>Katalog Referensi Alat</h1></header>
+            <div class="grid">
+                <a href="KATALOG ALAT UKUR 1.pdf" target="_blank" class="card" onclick="logAct('Katalog Alat Ukur 1')"><h3>KATALOG ALAT UKUR 1</h3><span class="tag">CATALOG</span></a>
+                <a href="KATALOG ASESORIES MESIN BUBUT.pdf" target="_blank" class="card" onclick="logAct('Katalog Aksesoris Bubut')"><h3>KATALOG AKSESORIS BUBUT</h3><span class="tag">CATALOG</span></a>
+                <a href="KATALOG ALAT POTONG.pdf" target="_blank" class="card" onclick="logAct('Katalog Alat Potong')"><h3>KATALOG ALAT POTONG</h3><span class="tag">CATALOG</span></a>
+                <a href="KATALOG KESELAMATAN KERJA.pdf" target="_blank" class="card" onclick="logAct('Katalog K3')"><h3>KATALOG K3</h3><span class="tag">CATALOG</span></a>
+            </div>
+        </div>
+
+        <div id="history" class="page">
+            <header>
+                <h1>Progress Belajar Kamu</h1>
+                <p>Materi yang sudah kamu selesaikan akan muncul di sini.</p>
+            </header>
+            <button class="btn-clear" onclick="clearLogs()">Reset Progress</button>
+            <div id="log-container"></div>
         </div>
 
         <footer>
-            <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta</p>
+            <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta | Created with Precision ⚙️</p>
         </footer>
     </main>
 
     <script>
-        // Fungsi Navigasi Halaman
-        function show(e, id) {
+        // Navigasi
+        function switchPage(e, id) {
             if(e) e.preventDefault();
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            
             document.getElementById(id).classList.add('active');
-            
-            const activeLink = document.querySelector(`nav ul li a[onclick*="${id}"]`);
-            if(activeLink) activeLink.classList.add('active');
+            const link = document.querySelector(`nav ul li a[onclick*="'${id}'"]`);
+            if(link) link.classList.add('active');
 
-            if(id === 'history-page') loadHistory();
+            if(id === 'history') renderLogs();
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        // Fungsi Simpan Riwayat ke Local Storage
-        function saveHistory(title) {
-            let history = JSON.parse(localStorage.getItem('mechHistory')) || [];
-            let now = new Date();
-            let timestamp = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+        // Histori & Motivasi
+        function logAct(name) {
+            let logs = JSON.parse(localStorage.getItem('smk_logs')) || [];
+            const quotes = ["Hebat! Terus asah skillmu 🛠️", "Engineer masa depan! 🚀", "Materi terselesaikan! 🏆", "Mantap, satu langkah lebih maju! ✨"];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             
-            // Tambah data baru ke atas list
-            history.unshift({ title: title, time: timestamp });
+            logs.unshift({
+                name: name,
+                date: new Date().toLocaleString('id-ID'),
+                quote: randomQuote
+            });
             
-            // Batasi riwayat maksimal 10 item saja
-            if(history.length > 10) history.pop();
-            
-            localStorage.setItem('mechHistory', JSON.stringify(history));
+            if(logs.length > 15) logs.pop();
+            localStorage.setItem('smk_logs', JSON.stringify(logs));
         }
 
-        // Fungsi Load Riwayat untuk ditampilkan
-        function loadHistory() {
-            const list = document.getElementById('history-list');
-            let history = JSON.parse(localStorage.getItem('mechHistory')) || [];
+        function renderLogs() {
+            const container = document.getElementById('log-container');
+            const logs = JSON.parse(localStorage.getItem('smk_logs')) || [];
             
-            if(history.length === 0) {
-                list.innerHTML = '<p style="color:#64748b">Belum ada materi yang dibuka.</p>';
+            if(logs.length === 0) {
+                container.innerHTML = '<p style="color:#64748b">Belum ada aktivitas. Ayo mulai belajar!</p>';
                 return;
             }
 
-            list.innerHTML = history.map(item => `
-                <div class="history-item">
-                    <div>
-                        <strong>${item.title}</strong><br>
-                        <span class="history-time">Terakhir dibuka: ${item.time}</span>
+            container.innerHTML = logs.map(l => `
+                <div class="history-card">
+                    <div class="history-info">
+                        <h4>${l.name}</h4>
+                        <span>📅 ${l.date}</span><br>
+                        <small style="color:var(--primary); font-style:italic;">"${l.quote}"</small>
                     </div>
-                    <span style="color:var(--primary)">✓ Selesai</span>
+                    <div class="badge-done">LULUS ✓</div>
                 </div>
             `).join('');
         }
 
-        // Fungsi Hapus Riwayat
-        function clearHistory() {
-            if(confirm('Hapus semua histori belajar?')) {
-                localStorage.removeItem('mechHistory');
-                loadHistory();
+        function clearLogs() {
+            if(confirm('Hapus riwayat belajar?')) {
+                localStorage.removeItem('smk_logs');
+                renderLogs();
             }
         }
     </script>
