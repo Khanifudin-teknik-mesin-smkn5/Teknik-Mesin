@@ -3,97 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teknik Mesin - SMK N 5 Surakarta</title>
+    <title>Mechanical Hub | SMK N 5 Surakarta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --dark-bg: #0b0f1a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --sidebar-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        .header {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        .header h1 { margin: 5px 0; font-size: 24px; text-transform: uppercase; }
-        .section-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            margin: 20px 0 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at 0% 0%, #1e293b 0%, #0b0f1a 100%);
+            color: #f8fafc;
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        .btn {
-            background-color: #4a4a4e;
-            color: white;
-            padding: 18px;
-            text-decoration: none;
+
+        /* --- BURGER MENU (TOMBOL GARIS 3) --- */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: var(--primary);
+            border: none;
+            padding: 10px;
             border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
         }
-        .btn:hover {
-            background-color: #333336;
+        .mobile-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #0b0f1a;
+            margin: 4px 0;
+            transition: 0.3s;
         }
-        .footer-note {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #777;
+
+        /* --- SIDEBAR --- */
+        nav {
+            width: var(--sidebar-width);
+            background: rgba(11, 15, 26, 0.98);
+            backdrop-filter: blur(20px);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            border-right: 1px solid var(--glass-border);
+            padding: 30px 20px;
+            z-index: 1000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .brand-box {
+            padding: 0 10px 30px;
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 25px;
+        }
+        .brand-box h2 { font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; color: var(--primary); }
+        .brand-box p { font-size: 0.65rem; color: #64748b; margin-top: 5px; }
+
+        nav ul { list-style: none; }
+        nav ul li a {
+            display: flex; align-items: center; padding: 12px 15px;
+            color: #94a3b8; text-decoration: none; border-radius: 12px;
+            margin-bottom: 6px; transition: 0.3s; font-size: 0.85rem;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            background: var(--glass); color: #fff; border: 1px solid var(--glass-border);
+            transform: translateX(5px);
+        }
+
+        /* --- OVERLAY (Gelap saat menu buka di HP) --- */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+
+        /* --- MAIN CONTENT --- */
+        main { 
+            margin-left: var(--sidebar-width); 
+            padding: 40px; 
+            width: 100%; 
+            transition: 0.3s;
+        }
+        
+        .page { display: none; animation: fadeIn 0.4s ease-out; }
+        .page.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- STATS DASHBOARD --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { 
+            background: var(--glass); border: 1px solid var(--glass-border); padding: 20px; 
+            border-radius: 20px;
+        }
+        .stat-card h4 { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card p { font-size: 1.3rem; font-weight: 800; font-family: 'JetBrains Mono'; color: var(--primary); }
+
+        /* --- CARDS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card {
+            background: var(--glass); border: 1px solid var(--glass-border);
+            padding: 24px; border-radius: 24px; text-decoration: none; color: inherit;
+            transition: 0.4s; cursor: pointer; display: flex; flex-direction: column;
+        }
+        .card:hover { 
+            background: rgba(255,255,255,0.06); transform: translateY(-5px); 
+            border-color: var(--primary);
+        }
+        .card h3 { font-size: 0.95rem; margin-bottom: 8px; color: #fff; }
+        .card p { font-size: 0.75rem; color: #64748b; margin-bottom: 15px; }
+        
+        .badge { 
+            font-size: 0.65rem; padding: 5px 12px; border-radius: 8px; font-weight: 700;
+            background: rgba(0, 210, 255, 0.1); color: var(--primary); align-self: flex-start;
+        }
+
+        /* --- EXAM LINK BOX --- */
+        .exam-input-box {
+            background: rgba(245, 158, 11, 0.05); border: 1px dashed var(--accent);
+            padding: 15px; border-radius: 12px; margin-top: 15px; font-size: 0.8rem;
+        }
+        .exam-input-box a { color: var(--accent); text-decoration: none; font-weight: 700; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 992px) {
+            nav { transform: translateX(-100%); }
+            nav.open { transform: translateX(0); }
+            main { margin-left: 0; padding: 80px 20px 40px; }
+            .mobile-toggle { display: block; }
+            .overlay.active { display: block; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        .history-item {
+            background: var(--glass); border-radius: 15px; padding: 15px 20px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid var(--success);
+        }
+
+        footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--glass-border); text-align: center; color: #475569; font-size: 0.75rem; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>TEKNIK MESIN</h1>
-        <h1>SMK N 5 SURAKARTA</h1>
-    </div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-    <div class="container">
-        <div class="section-title">MATERI DASAR-DASAR TEKNIK MESIN MANUFAKTUR</div>
-        <a href="MATERI DASAR KELAS X.pdf" class="btn">MATERI DASAR TEKNIK MESIN KELAS X</a>
-        <a href="Proses Bisnis Bidang Manufaktur .pdf" class="btn">MATERI BISNIS MANUFAKTUR</a>
-        <a href="Menerapkan Prinsip2 K3LH.pdf" class="btn">MENERAPKAN PRINSIP K3LH</a>
-        
-        <a href="MENGGUNAKAN ALAT UKUR.pdf" class="btn">MENGGUNAKAN ALAT UKUR</a>
-        <a href="PENILAIAN MENGUKUR DENGAN MENGGUNAKAN ALAT UKUR.pdf" class="btn">PENILAIAN MENGGUNAKAN ALAT UKUR</a>
-        <a href="SOAL MEMBACA jangka sorong Model.pdf" class="btn">SOAL MEMBACA JANGKA SORONG</a>
-        <a href="SOAL MEMBACA MIKROMETER.pdf" class="btn">SOAL MEMBACA MIKROMETER</a>
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+    </button>
 
-        <div class="section-title">MATERI</div>
-        <a href="02 BUKU INFORMASI BEKERJA DENGAN MESIN BUBUT.pdf" class="btn">MATERI MESIN BUBUT 1</a>
-        <a href="JOB SHEET BUBUT KELAS XI.pdf" class="btn">JOB SHEET BUBUT KELAS XI</a>
-        <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" class="btn">LEMBAR PENILAIAN PRAKTEK BUBUT KELAS XI</a>
-        <a href="SOAL BEKERJA DENGAN MESIN BUBUT.pdf" class="btn">SOAL TEKNIK PEMESINAN BUBUT</a>
+    <nav id="sidebar">
+        <div class="brand-box">
+            <h2>MECH-HUB v2.0</h2>
+            <p>SMK NEGERI 5 SURAKARTA</p>
+        </div>
+        <ul>
+            <li><a href="#" class="active" onclick="showPage(event, 'home')">🏠 Dashboard</a></li>
+            <li><a href="#" onclick="showPage(event, 'x')">⚙️ Dasar Teknik X</a></li>
+            <li><a href="#" onclick="showPage(event, 'bubut')">🌀 Mesin Bubut</a></li>
+            <li><a href="#" onclick="showPage(event, 'frais')">⚙️ Mesin Frais</a></li>
+            <li><a href="#" onclick="showPage(event, 'cnc')">💻 CNC & Gerinda</a></li>
+            <li><a href="#" onclick="showPage(event, 'pkk')">💡 PKK & Gambar</a></li>
+            <li><a href="#" onclick="showPage(event, 'katalog')">📂 Katalog Alat</a></li>
+            <li><a href="#" onclick="showPage(event, 'history')">🕒 Log Belajar</a></li>
+        </ul>
+    </nav>
 
-        <div class="section-title">FRAIS & CNC</div>
-        <a href="3 BUKU KERJA MELAKUKAN PEKERJAAN DENGAN MESIN FRAIS.pdf" class="btn">MATERI MESIN FRAIS</a>
-        <a href="JOOB SHEET FRAIS KELAS 2.pdf" class="btn">JOB SHEET FRAIS KELAS XI</a>
-        <a href="Modul_2_MesinBubut_CNC-verApril2_0.pdf" class="btn">MATERI CNC 1</a>
+    <main>
+        <div id="home" class="page active">
+            <h1 style="margin-bottom: 20px;">Engineer Dashboard</h1>
+            <div class="stats-grid">
+                <div class="stat-card"><h4>Rank Status</h4><p id="rank-name">Apprentice</p></div>
+                <div class="stat-card"><h4>Materi Dibuka</h4><p id="stats-count">0</p></div>
+                <div class="stat-card"><h4>SOP Status</h4><p style="color:var(--success)">SAFE</p></div>
+            </div>
+            
+            <h2 style="margin-bottom: 20px;">Quick Access</h2>
+            <div class="grid">
+                <div class="card" onclick="showPage(event, 'x')"><h3>⚙️ Dasar-Dasar Manufaktur</h3><p>Pelajari fondasi teknik mesin tingkat awal.</p></div>
+                <div class="card" onclick="showPage(event, 'bubut')"><h3>🌀 Bengkel Pemesinan</h3><p>Akses Job Sheet dan modul teknik bubut.</p></div>
+            </div>
+        </div>
 
-        <div class="section-title">** KATALOG **</div>
-        <a href="KATALOG ALAT UKUR 1.pdf" class="btn">KATALOG ALAT UKUR 1</a>
-        <a href="KATALOG ASESORIES MESIN BUBUT.pdf" class="btn">KATALOG ASESORIES MESIN BUBUT</a>
-        <a href="KATALOG ALAT POTONG.pdf" class="btn">KATALOG ALAT POTONG</a>
-        <a href="KATALOG KESLAMATAN KERJA.pdf" class="btn">KATALOG KESELAMATAN KERJA</a>
-    </div>
+        <div id="x" class="page">
+            <h1 style="margin-bottom: 30px;">Dasar Teknik Mesin X</h1>
+            <div class="grid">
+                <a href="MATERI DASAR KELAS X.pdf" target="_blank" class="card" onclick="logVisit('Dasar Kelas X')">
+                    <h3>MATERI DASAR KELAS X</h3><p>Materi inti kompetensi keahlian.</p><span class="badge">E-BOOK</span>
+                </a>
+                <a href="Proses Bisnis Bidang Manufaktur .pdf" target="_blank" class="card" onclick="logVisit('Bisnis Manufaktur')">
+                    <h3>MATERI BISNIS MANUFAKTUR</h3><p>Alur kerja dunia industri.</p><span class="badge">E-BOOK</span>
+                </a>
+                <a href="Menerapkan Prinsip2 K3LH.pdf" target="_blank" class="card" onclick="logVisit('K3LH')">
+                    <h3>MENERAPKAN PRINSIP K3LH</h3><p>Standar keselamatan kerja bengkel.</p><span class="badge">SAFETY</span>
+                </a>
+                <a href="MENGGUNAKAN ALAT UKUR.pdf" target="_blank" class="card" onclick="logVisit('Alat Ukur')">
+                    <h3>MENGGUNAKAN ALAT UKUR</h3><p>Teknik metrologi dasar.</p><span class="badge">METROLOGI</span>
+                </a>
+                <div class="card">
+                    <h3>SOAL ULANGAN DASAR TEKNIK</h3>
+                    <span class="badge">EXAM</span>
+                    <div class="exam-input-box">
+                        🔗 <a href="https://forms.gle/..." target="_blank">KERJAKAN SOAL</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="footer-note">
-        TUGAS - TEKNIK MESIN
-    </div>
+        <div id="bubut" class="page">
+            <h1 style="margin-bottom: 30px;">Pemesinan Bubut</h1>
+            <div class="grid">
+                <a href="02 BUKU INFORMASI BEKERJA DENGAN MESIN BUBUT.pdf" target="_blank" class="card" onclick="logVisit('Materi Bubut 1')">
+                    <h3>MATERI MESIN BUBUT 1</h3><p>Buku informasi pengoperasian.</p><span class="badge">INFO</span>
+                </a>
+                <a href="JOB SHEET BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logVisit('Job Sheet Bubut')">
+                    <h3>JOB SHEET BUBUT KELAS XI</h3><p>Instruksi kerja praktikum.</p><span class="badge">JOB SHEET</span>
+                </a>
+                <a href="LEMBAR PENILAIAN PRAKTIK BUBUT KELAS XI.pdf" target="_blank" class="card" onclick="logVisit('Rubrik Bubut')">
+                    <h3>PENILAIAN PRAKTEK BUBUT</h3><span class="badge">RUBRIK</span>
+                </a>
+            </div>
+        </div>
 
+        <div id="frais" class="page">
+            <h1 style="margin-bottom: 30px;">Pemesinan Frais</h1>
+            <div class="grid">
+                <a href="3 BUKU KERJA MELAKUKAN PEKERJAAN DENGAN MESIN FRAIS.pdf" target="_blank" class="card" onclick="logVisit('Materi Frais')">
+                    <h3>MATERI MESIN FRAIS</h3><span class="badge">INFO</span>
+                </a>
+                <a href="JOOB SHEET FRAIS KELAS 2.pdf" target="_blank" class="card" onclick="logVisit('Job Sheet Frais')">
+                    <h3>JOB SHEET FRAIS XI</h3><span class="badge">JOB SHEET</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="cnc" class="page">
+            <h1 style="margin-bottom: 30px;">CNC & Gerinda</h1>
+            <div class="grid">
+                <a href="Dasar+Pemrograman+untuk+Mesin+Bubut+CNC+dengan+GSK+928+TE-rev1.pdf" target="_blank" class="card" onclick="logVisit('CNC GSK')">
+                    <h3>MATERI CNC (GSK 928)</h3><span class="badge">PROGRAMMING</span>
+                </a>
+                <a href="4-8 modul Mengoperasikan mesin gerinda.pdf" target="_blank" class="card" onclick="logVisit('Gerinda')">
+                    <h3>MODUL GERINDA</h3><span class="badge">MODUL</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="pkk" class="page">
+            <h1 style="margin-bottom: 30px;">PKK & Gambar Teknik</h1>
+            <div class="grid">
+                <a href="2. BUKU INFORMASI Membaca Gambar Teknik.pdf" target="_blank" class="card" onclick="logVisit('Gambar Teknik')">
+                    <h3>MEMBACA GAMBAR TEKNIK</h3><span class="badge">DRAWING</span>
+                </a>
+                <a href="PROJEK PKK KELAS XI.pdf" target="_blank" class="card" onclick="logVisit('PKK XI')">
+                    <h3>PROJEK PKK XI</h3><span class="badge">PROJECT</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="katalog" class="page">
+            <h1 style="margin-bottom: 30px;">Katalog & Referensi</h1>
+            <div class="grid">
+                <a href="KATALOG ALAT POTONG.pdf" target="_blank" class="card"><h3>KATALOG ALAT POTONG</h3></a>
+                <a href="KATALOG KESLAMATAN KERJA.pdf" target="_blank" class="card"><h3>KATALOG K3</h3></a>
+                <a href="KATALOG ASESORIES MESIN BUBUT.pdf" target="_blank" class="card"><h3>AKSESORIS BUBUT</h3></a>
+            </div>
+        </div>
+
+        <div id="history" class="page">
+            <h1>Engine Log (History)</h1>
+            <div id="log-list" style="margin-top:20px;"></div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Teknik Mesin - SMK N 5 Surakarta</p>
+        </footer>
+    </main>
+
+    <script>
+        // FUNGSI TOGGLE SIDEBAR (GARIS 3)
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        // FUNGSI PINDAH HALAMAN
+        function showPage(e, id) {
+            if(e) e.preventDefault();
+            
+            // Tutup sidebar di HP setelah klik menu
+            if(window.innerWidth <= 992) {
+                toggleSidebar();
+            }
+
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            
+            document.getElementById(id).classList.add('active');
+            const targetLink = document.querySelector(`nav ul li a[onclick*="'${id}'"]`);
+            if(targetLink) targetLink.classList.add('active');
+            
+            if(id === 'history') renderLogs();
+            updateStats();
+            window.scrollTo(0,0);
+        }
+
+        // LOGIKA HISTORY & STATS
+        function logVisit(name) {
+            let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
+            logs.unshift({
+                name: name,
+                time: new Date().toLocaleTimeString('id-ID'),
+                date: new Date().toLocaleDateString('id-ID')
+            });
+            if(logs.length > 15) logs.pop();
+            localStorage.setItem('mech_logs', JSON.stringify(logs));
+            updateStats();
+        }
+
+        function updateStats() {
+            let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
+            const count = logs.length;
+            document.getElementById('stats-count').innerText = count;
+
+            let rank = "Apprentice";
+            if(count > 5) rank = "Junior Mechanic";
+            if(count > 10) rank = "Senior Technician";
+            document.getElementById('rank-name').innerText = rank;
+        }
+
+        function renderLogs() {
+            const list = document.getElementById('log-list');
+            let logs = JSON.parse(localStorage.getItem('mech_logs')) || [];
+            if(logs.length === 0) {
+                list.innerHTML = '<p>Belum ada aktivitas belajar.</p>';
+                return;
+            }
+            list.innerHTML = logs.map(l => `
+                <div class="history-item">
+                    <div>
+                        <strong>${l.name}</strong><br>
+                        <small>${l.date} - ${l.time}</small>
+                    </div>
+                    <span style="color:var(--success)">✓</span>
+                </div>
+            `).join('');
+        }
+
+        updateStats();
+    </script>
 </body>
 </html>
